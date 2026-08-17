@@ -1,0 +1,1 @@
+export const authorization = '6c1c8392f4f63646029ee0f5d6c86f5d'
