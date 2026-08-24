@@ -146,7 +146,7 @@ function AlbumView(props) {
                     loadingSize={32}
                     styleMediaVisible={{ width: '100%' }}
                     styleMediaInvisible={{ width: 420, maxWidth: '100%', aspectRatio: '1 / 1' }}
-                    onClick={() => contextApp.dialogsArrayAction.add('MediaView', { image: viewImageLink[viewImageLinkIndex] })}
+                    onClick={() => contextApp.dialogsArrayAction.add('MediaView', { src: viewImageLink[viewImageLinkIndex] })}
                     onCallbackSize={size => setViewImageSize(size)}
                   />
                   {
@@ -242,7 +242,7 @@ function AlbumView(props) {
           <Typography color='primary' variant='body1' style={{ fontSize: 20 }}>相关作品</Typography>
           <PosterCardMasonry
             breakpointCols={2}
-            imageProps={{ mode: 'BackgroundCover' }}
+            imageProps={{ mode: 'Image', objectFit: 'cover' }}
             cards={albumRecent}
             onClickCard={(card) => navigate(`/album/${card._id}`)}
           />

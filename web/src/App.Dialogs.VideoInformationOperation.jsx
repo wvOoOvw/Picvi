@@ -106,10 +106,10 @@ function App() {
       <DialogTitle>
         <Typography color='primary' style={{ fontSize: 20 }}>
           {
-            contextApp.dialogsArrayAction.props('VideoInformationOperation') !== undefined ? '修改图集' : null
+            contextApp.dialogsArrayAction.props('VideoInformationOperation') !== undefined ? '修改视频' : null
           }
           {
-            contextApp.dialogsArrayAction.props('VideoInformationOperation') === undefined ? '创建图集' : null
+            contextApp.dialogsArrayAction.props('VideoInformationOperation') === undefined ? '创建视频' : null
           }
         </Typography>
       </DialogTitle>

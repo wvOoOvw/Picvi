@@ -2,18 +2,18 @@ import React from 'react'
 
 import Backdrop from '@mui/material/Backdrop'
 
-import Image from './App.ComponentPure.Media'
+import Media from './App.ComponentPure.Media'
 
 import { Context as ContextApp } from './App'
 
 function App() {
   const contextApp = React.useContext(ContextApp)
 
-  const [image, setImage] = React.useState()
+  const [src, setSrc] = React.useState()
 
   React.useEffect(() => {
     if (contextApp.dialogsArrayAction.exist('MediaView')) {
-      setImage(contextApp.dialogsArrayAction.props('MediaView')?.image || undefined)
+      setSrc(contextApp.dialogsArrayAction.props('MediaView')?.src || undefined)
     }
   }, [contextApp.dialogsArrayAction.exist('MediaView')])
 
@@ -21,12 +21,13 @@ function App() {
     <Backdrop open={contextApp.dialogsArrayAction.exist('MediaView')} onClick={() => contextApp.dialogsArrayAction.remove('MediaView')} style={{ backdropFilter: 'blur(4px)', zIndex: 10000 }}>
       <div style={{ width: '100%', height: '100%', opacity: contextApp.dialogsArrayAction.exist('MediaView') ? 1 : 0, transition: '0.2s all' }}>
         {
-          image ?
+          src ?
             <>
               <Media
                 lazy
-                src={image}
-                mode='BackgroundContain'
+                src={src}
+                controls={true}
+                objectFit={'contain'}
                 loadingSize={32}
                 style={{ width: '100%', height: '100%' }}
               />

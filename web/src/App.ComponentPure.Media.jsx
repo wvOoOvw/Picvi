@@ -23,7 +23,7 @@ function MediaBroken(props) {
   const Component =
     <>
       {
-        props.mode === 'Image' || props.mode === 'Video' || props.mode === 'BackgroundCover' || props.mode === 'BackgroundContain' ?
+        props.mode === 'Image' || props.mode === 'Video' ?
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 8, ...props.style }}>
             <BrokenImageIcon style={{ opacity: 0.5 }} />
             <Typography variant='body2' style={{ fontSize: 12, color: 'black', opacity: 0.5 }}>图片加载失败</Typography>
@@ -51,19 +51,14 @@ function MediaContent(props) {
   const ImageRender =
     <>
       {
-        props.mode === 'Image' ? <img style={{ width: '100%', height: '100%' }} src={props.src} /> : null
-      }
-      {
-        props.mode === 'BackgroundCover' ? <div style={{ width: '100%', height: '100%', backgroundImage: `url(${props.src})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} /> : null
-      }
-      {
-        props.mode === 'BackgroundContain' ? <div style={{ width: '100%', height: '100%', backgroundImage: `url(${props.src})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} /> : null
+        props.mode === 'Image' ? 
+          <img style={{ width: '100%', height: '100%', objectFit: props.objectFit || 'cover' }} src={props.src} /> : null
       }
       {
         props.mode === 'Avatar' ? <Avatar style={{ width: '100%', height: '100%' }} src={props.src} /> : null
       }
       {
-        props.mode === 'Video' ? <video style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={props.src} autoPlay={props.autoPlay} muted={props.muted} loop={props.loop} controls={props.controls} playsInline /> : null
+        props.mode === 'Video' ? <video style={{ width: '100%', height: '100%', objectFit: props.objectFit }} src={props.src} autoPlay={props.autoPlay} muted={props.muted} loop={props.loop} controls={props.controls} playsInline /> : null
       }
     </>
 
@@ -149,6 +144,7 @@ function Media(props) {
   const card = props.card
   const cardActionArea = props.cardActionArea
   const loadingSize = props.loadingSize
+  const objectFit = props.objectFit
 
   const onClick = props.onClick
   const onCallbackSize = props.onCallbackSize
@@ -159,6 +155,12 @@ function Media(props) {
   const styleMediaLoading = props.styleMediaLoading
   const styleMediaBroken = props.styleMediaBroken
   const styleMediaSuspense = props.styleMediaSuspense
+
+  // Video specific props
+  const autoPlay = props.autoPlay !== undefined ? props.autoPlay : false
+  const muted = props.muted !== undefined ? props.muted : false
+  const loop = props.loop !== undefined ? props.loop : false
+  const controls = props.controls !== undefined ? props.controls : false
 
   const { mediaSrc, mediaSrcPrevious, loading, loadingSuccess, loadingFail, intersectionRef } = useLoadMedia({ src: src, lazy: lazy, onCallbackSize: onCallbackSize })
 
@@ -176,6 +178,11 @@ function Media(props) {
             cardActionArea={cardActionArea}
             intersectionRef={intersectionRef}
             onClick={onClick}
+            autoPlay={autoPlay}
+            muted={muted}
+            loop={loop}
+            controls={controls}
+            objectFit={objectFit}
             style={{ ...style, ...styleMediaVisible }}
           />
           : null

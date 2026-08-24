@@ -908,34 +908,19 @@ router.post('/api/app/video/find', async (req, res) => {
       if (videoExist === null) throw { error: new Error(), data: { code: 500, message: '异常错误' } }
     }
 
-    const user = await Mongo.client.db(Collection).collection('User').findOne({ authorization: authorization }, { projection: { _id: 1, subscription: 1, videoFavoriteds_id: 1 } })
+    const user = await Mongo.client.db(Collection).collection('User').findOne({ authorization: authorization }, { projection: { _id: 1, subscription: 1, subscriptionExpireTime: 1 } })
     const video = await Mongo.client.db(Collection).collection('Video').findOne({ _id: new ObjectId(video_id) })
-    const userSelf = await Mongo.client.db(Collection).collection('User').findOne({ authorization: authorization }, { projection: { _id: 1 } })
-    const userCreator = await Mongo.client.db(Collection).collection('User').findOne({ _id: video.user_id }, { projection: { _id: 1 } })
 
-    const pipelineVideoFavoriteds = [
-      { $match: { videoFavoriteds_id: { $in: [video._id] } } },
-      { $unwind: '$videoFavoriteds_id' },
-      { $group: { _id: '$videoFavoriteds_id', videoFavoriteds_id: { $sum: 1 } } }
-    ]
+    if (user.subscription === 'administrator') {
+      res.send({ code: 200, data: video })
+    }
 
-    const videoFavoriteds_id = await Mongo.client.db(Collection).collection('User').aggregate(pipelineVideoFavoriteds).toArray()
-
-    video.own = Boolean(user && String(user._id) === String(video.user_id))
-    video.favorited = Boolean(user && user.videoFavoriteds_id.some(i => String(i) === String(video._id)))
-    video.favoritedCount = videoFavoriteds_id.find(i => String(i._id) === String(video._id))?.videoFavoriteds_id || 0
-    video.user = userCreator
-
-    video.user.self = Boolean(userSelf && String(video.user._id) === String(userSelf._id))
-
-    if (video.own === false) {
+    if (user.subscription !== 'administrator') {
+      if (!user.subscription.includes('video') || user.subscriptionExpireTime < new Date().getTime()) video.subscribeview = undefined
       if (video.status !== 1) res.send({ code: 200, data: { _id: video._id, status: video.status } })
       if (video.status === 1) res.send({ code: 200, data: video })
     }
 
-    if (video.own === true) {
-      res.send({ code: 200, data: video })
-    }
   } catch (e) {
     if (process.argv.includes('--dev')) { console.log(e?.error || e) }; res.status(e?.data?.status || 500).send({ code: e?.data?.code || 500, message: e?.data?.message || '异常错误' })
   }
@@ -1005,9 +990,7 @@ router.post('/api/app/video/find/list', async (req, res) => {
 
     const pipelineVideo = [
       { $match: match },
-      { $lookup: { from: "User", localField: "user_id", foreignField: "_id", as: "user" } },
-      { $addFields: { user: { $first: "$user" } } },
-      { $project: { seed: { $mod: ['$createTime', seed] }, _id: 1, name: 1, poster: 1, status: 1, createTime: 1, updateTime: 1, user_id: 1, user: { _id: '$user._id' } } },
+      { $project: { seed: { $mod: ['$createTime', seed] }, _id: 1, name: 1, poster: 1, status: 1, createTime: 1, updateTime: 1 } },
       { $sort: { seed: -1, createTime: -1 } },
     ]
 
@@ -1022,7 +1005,6 @@ router.post('/api/app/video/find/list', async (req, res) => {
     const videoFavoriteds_id = await Mongo.client.db(Collection).collection('User').aggregate(pipelineVideoFavoriteds).toArray()
 
     video.forEach(i => {
-      i.own = Boolean(user && String(user._id) === String(i.user_id))
       i.favorited = Boolean(user && user.videoFavoriteds_id.some(n => String(n) === String(i._id)))
       i.favoritedCount = videoFavoriteds_id.find(n => String(n._id) === String(i._id))?.videoFavoriteds_id || 0
       delete i.seed
@@ -1178,6 +1160,7 @@ router.post('/api/app/admin/video/delete', async (req, res) => {
   }
 
 })
+
 
 /* Video API END */
 
