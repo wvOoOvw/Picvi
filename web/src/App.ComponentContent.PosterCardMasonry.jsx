@@ -34,7 +34,6 @@ function PosterCardMasonryItem(props) {
               <Media
                 lazy
                 src={card.poster[0]}
-                mode='Image'
                 loadingSize={32}
                 styleMediaVisible={{ width: '100%', aspectRatio: '1 / 1' }}
                 styleMediaInvisible={{ width: '100%', aspectRatio: '1 / 1' }}

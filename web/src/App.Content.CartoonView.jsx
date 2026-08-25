@@ -142,7 +142,6 @@ function CartoonView(props) {
                   <Media
                     cardActionArea
                     src={viewImageLink[viewImageLinkIndex]}
-                    mode='Image'
                     loadingSize={32}
                     styleMediaVisible={{ width: '100%' }}
                     styleMediaInvisible={{ width: 420, maxWidth: '100%', aspectRatio: '1 / 1' }}
@@ -161,7 +160,6 @@ function CartoonView(props) {
                   <Media
                     cardActionArea
                     src={emptyImageMemo}
-                    mode='Image'
                     loadingSize={32}
                     styleMediaVisible={{ width: '100%' }}
                     styleMediaInvisible={{ width: 420, maxWidth: '100%', aspectRatio: '1 / 1' }}

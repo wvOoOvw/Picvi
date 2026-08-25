@@ -436,7 +436,6 @@ function User(props) {
           <div style={{ width: '100%', maxHeight: 300, aspectRatio: '5 / 3', position: 'relative' }}>
             <Media
               src={LandingWebp}
-              mode='Image'
               objectFit='cover'
               loadingSize={32}
               style={{ width: '100%', height: '100%', position: 'absolute', left: 0, top: 0, borderRadius: '0px 0px 16px 16px', overflow: 'hidden', boxShadow: '0px -4px 12px gray' }}

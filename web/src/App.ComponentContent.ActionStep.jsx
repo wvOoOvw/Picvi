@@ -187,7 +187,6 @@ export function StepPreview(props) {
             value={value.preview}
             onChange={link => setValue(i => ({ ...i, preview: link }))}
             onChangeAppend={link => setValue(i => ({ ...i, preview: [...i.preview, link] }))}
-            
           />
           : null
       }

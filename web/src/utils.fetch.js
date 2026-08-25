@@ -29,7 +29,7 @@ FetchConstructor.prototype.connect = async function (authorization) {
   this.authorization = authorization
 }
 
-FetchConstructor.prototype.json = async function (url, body, signal,) {
+FetchConstructor.prototype.json = async function (url, body, signal) {
   return window.fetch
     (
       urlDecode(url),
