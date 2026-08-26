@@ -21,7 +21,7 @@ import PosterCardMasonry from './App.ComponentContent.PosterCardMasonry'
 import { Context as ContextApp } from './App'
 
 import { Fetch, urlDecode } from './utils.fetch'
-import { copy,  } from './utils.copy'
+import { copy, } from './utils.copy'
 import { decryptArrayBuffer, getEncUrlMime } from '../../common/crypto-web.js'
 import { emptyImage } from './utils.emptyImage'
 
@@ -45,7 +45,7 @@ function VideoView(props) {
 
   const viewImageLink = React.useMemo(() => video.subscribeview || video.preview, [video.preview, video.subscribeview])
   const emptyImageMemo = React.useMemo(() => emptyImage(), [])
-  
+
   const paneStyleWidth = React.useMemo(() => {
     if (viewImageSize && screenSize) {
       var a = 480
@@ -111,15 +111,17 @@ function VideoView(props) {
       })
   }
 
-  const onDownloadOne = async () => {
-    const url = urlDecode(viewImageLink[viewImageLinkIndex])
+  const onDownloadOne = async (index) => {
+    const url = urlDecode(viewImageLink[index])
+
+    const minetype = url.replace(/\.enc$/, '').match(/\.([a-zA-Z0-9]+)$/)?.[1]
 
     const buffer = await Fetch.arrayBufferUnauth(url)
     const blob = await decryptArrayBuffer(buffer, getEncUrlMime(url))
 
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
-    a.download = `${video.name + ' ' + viewImageLinkIndex}.jpg`
+    a.download = `${video.name + ' ' + viewImageLinkIndex}.${minetype}`
     a.click()
     a.remove()
   }
@@ -140,6 +142,7 @@ function VideoView(props) {
               viewImageLink.length > 0 ?
                 <>
                   <Media
+                    controls
                     cardActionArea
                     src={viewImageLink[viewImageLinkIndex]}
                     loadingSize={32}
@@ -158,6 +161,7 @@ function VideoView(props) {
               viewImageLink.length === 0 ?
                 <>
                   <Media
+                    controls
                     cardActionArea
                     src={emptyImageMemo}
                     loadingSize={32}
@@ -232,8 +236,8 @@ function VideoView(props) {
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
           <Typography color='primary' variant='body1' style={{ fontSize: 20 }} id='download'>下载</Typography>
           <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 12 }}>
-            <Button fullWidth variant='contained' style={{ fontSize: 12 }} onClick={video.subscribeview ? onDownloadOne : onSubscribe}>下载当前</Button>
-            <Button fullWidth variant='contained' style={{ fontSize: 12 }} onClick={video.subscribeview ? onDownloadAll : onSubscribe}>下载全部</Button>
+            <Button fullWidth variant='contained' style={{ fontSize: 12 }} onClick={video.subscribeview ? () => onDownloadOne(viewImageLinkIndex) : onSubscribe}>下载当前</Button>
+            <Button fullWidth variant='contained' style={{ fontSize: 12 }} onClick={video.subscribeview ? () => onDownloadAll() : onSubscribe}>下载全部</Button>
           </div>
         </div>
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>

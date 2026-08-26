@@ -5,7 +5,8 @@ export const subscription = [
     "accessExpireTime": "永久有效",
     "accessExpireTimeDayJS": ["1000", "year"],
     "price": "¥0",
-    "value": "user"
+    "value": "user",
+    "noSale": true,
   },
   {
     "name": "管理员",
@@ -13,14 +14,15 @@ export const subscription = [
     "accessExpireTime": "永久有效",
     "accessExpireTimeDayJS": ["1000", "year"],
     "price": "¥0",
-    "value": "administrator"
+    "value": "administrator",
+    "noSale": true,
   },
   {
     "name": "普通会员",
     "description": "可查看图集的全部内容",
     "accessExpireTime": "1年",
     "accessExpireTimeDayJS": ["1", "year"],
-    "price": "¥99",
+    "price": "¥68",
     "value": "user:ablum"
   },
   {
@@ -28,7 +30,7 @@ export const subscription = [
     "description": "可查看图集、动漫、视频的全部内容",
     "accessExpireTime": "永久有效",
     "accessExpireTimeDayJS": ["1000", "year"],
-    "price": "¥199",
+    "price": "¥128",
     "value": "user:ablum.cartoon.video"
   }
 ]

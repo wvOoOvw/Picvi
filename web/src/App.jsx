@@ -9,8 +9,10 @@ import Message from './App.Module.Message'
 import Dialogs from './App.Module.Dialogs'
 import Content from './App.Module.Content'
 import Navigation from './App.Module.Navigation'
+import BrowserGuide from './App.Component.BrowserGuide'
 
 import { Fetch } from './utils.fetch'
+import { shouldOpenInExternalBrowser } from './utils.browser'
 
 const Context = React.createContext()
 
@@ -180,10 +182,6 @@ function App() {
 
   React.useEffect(() => { onInit() }, [])
 
-  // React.useEffect(() => {
-  //   dialogsArrayAction.add('AlbumInformationOperation')
-  // }, [])
-
   const contextProvider = {}
 
   Object.assign(contextProvider, { theme, setTheme })
@@ -201,11 +199,22 @@ function App() {
             <Loading />
             <Message />
             {
-              userConnected === true ?
+              shouldOpenInExternalBrowser() === true ?
                 <>
-                  <Dialogs />
-                  <Content />
-                  <Navigation />
+                  <BrowserGuide />
+                </>
+                : null
+            }
+            {
+              shouldOpenInExternalBrowser() !== true ?
+                <>
+                  userConnected === true ? (
+                  <>
+                    <Dialogs />
+                    <Content />
+                    <Navigation />
+                  </>
+                  ) : null
                 </>
                 : null
             }

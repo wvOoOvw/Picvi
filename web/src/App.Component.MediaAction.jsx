@@ -61,8 +61,6 @@ function App(props) {
               cardActionArea
               src={i}
               loadingSize={32}
-              controls={false}
-              autoPlay={false}
               objectFit={'cover'}
               style={{ width: '100%', height: '100%' }}
               onClick={() => contextApp.dialogsArrayAction.add('MediaView', { src: i })}

@@ -111,22 +111,24 @@ function CartoonView(props) {
       })
   }
 
-  const onDownloadOne = async () => {
-    const url = urlDecode(viewImageLink[viewImageLinkIndex])
+  const onDownloadOne = async (index) => {
+    const url = urlDecode(viewImageLink[index])
+
+    const minetype = url.replace(/\.enc$/, '').match(/\.([a-zA-Z0-9]+)$/)?.[1]
 
     const buffer = await Fetch.arrayBufferUnauth(url)
     const blob = await decryptArrayBuffer(buffer, getEncUrlMime(url))
 
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
-    a.download = `${cartoon.name + ' ' + viewImageLinkIndex}.jpg`
+    a.download = `${cartoon.name + ' ' + viewImageLinkIndex}.${minetype}`
     a.click()
     a.remove()
   }
 
   const onDownloadAll = async () => {
     for (let i = 0; i < viewImageLink.length; i++) {
-      await onDownloadOne()
+      await onDownloadOne(viewImageLink[i])
     }
   }
 
@@ -232,8 +234,8 @@ function CartoonView(props) {
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
           <Typography color='primary' variant='body1' style={{ fontSize: 20 }} id='download'>下载</Typography>
           <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 12 }}>
-            <Button fullWidth variant='contained' style={{ fontSize: 12 }} onClick={cartoon.subscribeview ? onDownloadOne : onSubscribe}>下载当前</Button>
-            <Button fullWidth variant='contained' style={{ fontSize: 12 }} onClick={cartoon.subscribeview ? onDownloadAll : onSubscribe}>下载全部</Button>
+            <Button fullWidth variant='contained' style={{ fontSize: 12 }} onClick={cartoon.subscribeview ? () => onDownloadOne(viewImageLinkIndex) : onSubscribe}>下载当前</Button>
+            <Button fullWidth variant='contained' style={{ fontSize: 12 }} onClick={cartoon.subscribeview ? () => onDownloadAll() : onSubscribe}>下载全部</Button>
           </div>
         </div>
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>

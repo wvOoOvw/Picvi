@@ -18,21 +18,10 @@ import { Context as ContextApp } from './App'
 
 import { copy } from './utils.copy'
 
+import { subscription } from '../../common/subscription'
+
 import ContactQQ_2 from '../static/image/ContactQQ_2.jpg'
 import ContactWXMP_1 from '../static/image/ContactWXMP_1.jpg'
-
-const subscribeOptions = [
-  {
-    name: '普通会员',
-    description: '查看图集（1年有效）',
-    price: '¥99',
-  },
-  {
-    name: '高级会员',
-    description: '查看图集动漫视频（永久有效）',
-    price: '¥199',
-  },
-]
 
 function CardGroupCash(props) {
   const name = props.name
@@ -136,7 +125,7 @@ function App() {
             step === 0 ?
               <>
                 {
-                  subscribeOptions.map((i, index) => {
+                  subscription.filter(i => i.noSale !== true).map((i, index) => {
                     return <CardGroupCash key={index} name={i.name} price={i.price} description={i.description} onClick={() => { setSelectedOption(i); setStep(1); }} />
                   })
                 }

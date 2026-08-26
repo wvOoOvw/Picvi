@@ -25,8 +25,8 @@ function App() {
             <>
               <Media
                 lazy
+                controls
                 src={src}
-                controls={true}
                 objectFit={'contain'}
                 loadingSize={32}
                 style={{ width: '100%', height: '100%' }}

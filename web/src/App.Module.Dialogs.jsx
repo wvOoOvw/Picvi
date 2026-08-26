@@ -33,7 +33,7 @@ function App() {
 
   const contextApp = React.useContext(ContextApp)
 
-  // React.useEffect(() => { contextApp.setDialogsArray([]) }, [pathname])
+  React.useEffect(() => { contextApp.setDialogsArray([]) }, [pathname])
 
   const Component =
     <>
