@@ -174,7 +174,7 @@ export function StepPoster(props) {
             {
               value.subscribeview && value.subscribeview.length > 0 &&
               value.subscribeview.some(item => !value.poster.includes(item)) ?
-                <div style={{ marginBottom: 8, textAlign: 'center' }}>
+                <div style={{ textAlign: 'center' }}>
                   <Button
                     variant="text"
                     size="small"
@@ -235,7 +235,7 @@ export function StepPreview(props) {
             {
               value.subscribeview && value.subscribeview.length > 0 &&
               value.subscribeview.some(item => !value.preview.includes(item)) ?
-                <div style={{ marginBottom: 8, textAlign: 'center' }}>
+                <div style={{ textAlign: 'center' }}>
                   <Button
                     variant="text"
                     size="small"
