@@ -22,7 +22,7 @@ function App() {
   const onFetchUser = async () => {
     setUserLoading(true)
 
-    await Fetch.json('/api/app/user/find', { user_id: contextApp.user._id })
+    await Fetch.json('/api/app/user/find/self')
       .then(res => {
         setUser({ password: res.data.password })
       })

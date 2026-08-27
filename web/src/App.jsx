@@ -208,13 +208,15 @@ function App() {
             {
               shouldOpenInExternalBrowser() !== true ?
                 <>
-                  userConnected === true ? (
-                  <>
-                    <Dialogs />
-                    <Content />
-                    <Navigation />
-                  </>
-                  ) : null
+                  {
+                    userConnected === true ?
+                      <>
+                        <Dialogs />
+                        <Content />
+                        <Navigation />
+                      </>
+                      : null
+                  }
                 </>
                 : null
             }

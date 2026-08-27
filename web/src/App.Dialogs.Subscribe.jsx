@@ -51,6 +51,45 @@ function CardGroupCash(props) {
   return Component
 }
 
+function CardCurrentSubscription() {
+  const contextApp = React.useContext(ContextApp)
+
+  const userSubscriptionExpireTime = contextApp.user.subscriptionExpireTime
+
+  const subscriptionPlan = subscription.find(plan => plan.value === contextApp.user.subscription)
+
+  const isExpired = userSubscriptionExpireTime && new Date(userSubscriptionExpireTime) < new Date()
+  const isPermanent = !userSubscriptionExpireTime || userSubscriptionExpireTime === 0
+
+  const Component =
+    <Card>
+      <CardContent style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <Typography variant='body1' style={{ fontSize: 16, marginBottom: 8 }}>当前订阅状态</Typography>
+        <Divider style={{ width: '100%' }} />
+        <Typography variant='body2' style={{ fontSize: 18, fontWeight: 'bold' }}>
+          {
+            isExpired ? `${subscriptionPlan.name}（已过期）` : subscriptionPlan.name
+          }
+        </Typography>
+        <Typography variant='body2' style={{ opacity: 0.6, fontSize: 14 }}>
+          {
+            isExpired ? '您的订阅已过期，请重新订阅' : subscriptionPlan.description
+          }
+        </Typography>
+        <Typography variant='body2' style={{ opacity: 0.6, fontSize: 14 }}>
+          {
+            isPermanent === true ? '到期时间：永久有效' : null
+          }
+          {
+            isPermanent !== true ? `到期时间：${new Date(userSubscriptionExpireTime).toLocaleDateString()}${isExpired ? '（已过期）' : null}` : null
+          }
+        </Typography>
+      </CardContent>
+    </Card>
+
+  return Component
+}
+
 function CardContactCash() {
   const contextApp = React.useContext(ContextApp)
 
@@ -114,26 +153,44 @@ function App() {
       <DialogContent style={{ paddingTop: 12, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <Stepper alternativeLabel activeStep={step} style={{ overflow: 'auto', flexShrink: 0 }}>
           <Step style={{ minWidth: 80 }} id='step0'>
-            <StepLabel style={{ whiteSpace: 'nowrap', cursor: 'pointer' }} onClick={() => step > 0 ? setStep(0) : undefined}>选择订阅套餐</StepLabel>
+            <StepLabel style={{ whiteSpace: 'nowrap', cursor: 'pointer' }}>当前订阅</StepLabel>
           </Step>
           <Step style={{ minWidth: 80 }} id='step1'>
-            <StepLabel style={{ whiteSpace: 'nowrap', cursor: 'pointer' }} onClick={() => step > 1 ? setStep(1) : undefined}>联系客服</StepLabel>
+            <StepLabel style={{ whiteSpace: 'nowrap', cursor: 'pointer' }} onClick={() => step > 1 ? setStep(1) : undefined}>选择订阅套餐</StepLabel>
+          </Step>
+          <Step style={{ minWidth: 80 }} id='step2'>
+            <StepLabel style={{ whiteSpace: 'nowrap', cursor: 'pointer' }} onClick={() => step > 2 ? setStep(2) : undefined}>联系客服</StepLabel>
           </Step>
         </Stepper>
         <div style={{ width: '100%', maxWidth: 320, margin: 'auto' }}>
           {
             step === 0 ?
               <>
+                <CardCurrentSubscription />
+                <Button
+                  variant='contained'
+                  color='primary'
+                  style={{ width: '100%', marginTop: 16 }}
+                  onClick={() => setStep(1)}
+                >
+                  选择订阅套餐
+                </Button>
+              </>
+              : null
+          }
+          {
+            step === 1 ?
+              <>
                 {
                   subscription.filter(i => i.noSale !== true).map((i, index) => {
-                    return <CardGroupCash key={index} name={i.name} price={i.price} description={i.description} onClick={() => { setSelectedOption(i); setStep(1); }} />
+                    return <CardGroupCash key={index} name={i.name} price={i.price} description={i.description} onClick={() => { setSelectedOption(i); setStep(2); }} />
                   })
                 }
               </>
               : null
           }
           {
-            step === 1 ?
+            step === 2 ?
               <>
                 {
                   selectedOption ?
