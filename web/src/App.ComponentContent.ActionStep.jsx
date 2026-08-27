@@ -7,6 +7,7 @@ import Chip from '@mui/material/Chip'
 import Switch from '@mui/material/Switch'
 
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded'
+import ChecklistIcon from '@mui/icons-material/Checklist'
 
 import MediaAction from './App.Component.MediaAction'
 
@@ -149,17 +150,50 @@ export function StepActor(props) {
 export function StepPoster(props) {
   const value = props.value
   const setValue = props.setValue
+  const contextApp = React.useContext(ContextApp)
+
+  const handleOpenDialog = () => {
+    contextApp.dialogsArrayAction.add('SubscribeviewSelector', {
+      subscribeview: value.subscribeview,
+      selectedIds: value.poster,
+      onConfirm: (selectedItems) => {
+        setValue(i => ({
+          ...i,
+          poster: [...new Set([...i.poster, ...selectedItems])]
+        }))
+      },
+      targetFieldName: "poster"
+    })
+  }
 
   const Component =
     <>
       {
         value._id !== undefined ?
-          <MediaAction
-            _id={value._id}
-            value={value.poster}
-            onChange={link => setValue(i => ({ ...i, poster: link }))}
-            onChangeAppend={link => setValue(i => ({ ...i, poster: [...i.poster, link] }))}
-          />
+          <>
+            {
+              value.subscribeview && value.subscribeview.length > 0 &&
+              value.subscribeview.some(item => !value.poster.includes(item)) ?
+                <div style={{ marginBottom: 8, textAlign: 'center' }}>
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={handleOpenDialog}
+                    color="primary"
+                    startIcon={<ChecklistIcon />}
+                  >
+                    从订阅内容中选择
+                  </Button>
+                </div>
+                : null
+            }
+            <MediaAction
+              _id={value._id}
+              value={value.poster}
+              onChange={link => setValue(i => ({ ...i, poster: link }))}
+              onChangeAppend={link => setValue(i => ({ ...i, poster: [...i.poster, link] }))}
+            />
+          </>
           : null
       }
       {
@@ -177,17 +211,50 @@ export function StepPoster(props) {
 export function StepPreview(props) {
   const value = props.value
   const setValue = props.setValue
+  const contextApp = React.useContext(ContextApp)
+
+  const handleOpenDialog = () => {
+    contextApp.dialogsArrayAction.add('SubscribeviewSelector', {
+      subscribeview: value.subscribeview,
+      selectedIds: value.preview,
+      onConfirm: (selectedItems) => {
+        setValue(i => ({
+          ...i,
+          preview: [...new Set([...i.preview, ...selectedItems])]
+        }))
+      },
+      targetFieldName: "preview"
+    })
+  }
 
   const Component =
     <>
       {
         value._id !== undefined ?
-          <MediaAction
-            _id={value._id}
-            value={value.preview}
-            onChange={link => setValue(i => ({ ...i, preview: link }))}
-            onChangeAppend={link => setValue(i => ({ ...i, preview: [...i.preview, link] }))}
-          />
+          <>
+            {
+              value.subscribeview && value.subscribeview.length > 0 &&
+              value.subscribeview.some(item => !value.preview.includes(item)) ?
+                <div style={{ marginBottom: 8, textAlign: 'center' }}>
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={handleOpenDialog}
+                    color="primary"
+                    startIcon={<ChecklistIcon />}
+                  >
+                    从订阅内容中选择
+                  </Button>
+                </div>
+                : null
+            }
+            <MediaAction
+              _id={value._id}
+              value={value.preview}
+              onChange={link => setValue(i => ({ ...i, preview: link }))}
+              onChangeAppend={link => setValue(i => ({ ...i, preview: [...i.preview, link] }))}
+            />
+          </>
           : null
       }
       {

@@ -153,7 +153,7 @@ function App() {
       <DialogContent style={{ paddingTop: 12, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <Stepper alternativeLabel activeStep={step} style={{ overflow: 'auto', flexShrink: 0 }}>
           <Step style={{ minWidth: 80 }} id='step0'>
-            <StepLabel style={{ whiteSpace: 'nowrap', cursor: 'pointer' }}>当前订阅</StepLabel>
+            <StepLabel style={{ whiteSpace: 'nowrap', cursor: 'pointer' }} onClick={() => step > 0 ? setStep(0) : undefined}>当前订阅</StepLabel>
           </Step>
           <Step style={{ minWidth: 80 }} id='step1'>
             <StepLabel style={{ whiteSpace: 'nowrap', cursor: 'pointer' }} onClick={() => step > 1 ? setStep(1) : undefined}>选择订阅套餐</StepLabel>

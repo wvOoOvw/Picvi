@@ -28,6 +28,8 @@ const System = React.lazy(() => import('./App.Dialogs.System'))
 
 const Subscribe = React.lazy(() => import('./App.Dialogs.Subscribe'))
 
+const SubscribeviewSelector = React.lazy(() => import('./App.Dialogs.SubscribeviewSelector'))
+
 function App() {
   const pathname = ReactRouterDom.useLocation().pathname
 
@@ -58,6 +60,7 @@ function App() {
 
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('System')}><System /></Suspense>
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('Subscribe')}><Subscribe /></Suspense>
+      <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('SubscribeviewSelector')}><SubscribeviewSelector /></Suspense>
     </>
 
   return Component
