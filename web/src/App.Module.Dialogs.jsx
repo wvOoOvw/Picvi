@@ -19,7 +19,6 @@ const UserRegister = React.lazy(() => import('./App.Dialogs.UserRegister'))
 const UserInformationOperation = React.lazy(() => import('./App.Dialogs.UserInformationOperation'))
 
 const Contact = React.lazy(() => import('./App.Dialogs.Contact'))
-const ContactChat = React.lazy(() => import('./App.Dialogs.ContactChat'))
 
 const MediaView = React.lazy(() => import('./App.Dialogs.Global.MediaView'))
 const Confirm = React.lazy(() => import('./App.Dialogs.Global.Confirm'))
@@ -53,13 +52,13 @@ function App() {
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('UserInformationOperation')}><UserInformationOperation /></Suspense>
 
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('Contact')}><Contact /></Suspense>
-      <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('ContactChat')}><ContactChat /></Suspense>
 
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('MediaView')}><MediaView /></Suspense>
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('Confirm')}><Confirm /></Suspense>
 
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('System')}><System /></Suspense>
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('Subscribe')}><Subscribe /></Suspense>
+      
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('SubscribeviewSelector')}><SubscribeviewSelector /></Suspense>
     </>
 
