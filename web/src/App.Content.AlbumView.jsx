@@ -189,38 +189,38 @@ function AlbumView(props) {
 
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Typography variant='body1' style={{ fontSize: 10, opacity: 0.5 }}>图集ID：{album._id}</Typography>
-            <CopyAllIcon style={{ width: 10, height: 10, cursor: 'pointer' }} onClick={() => onCopy(album._id)} />
+            <Typography variant='body1' style={{ fontSize: 12, opacity: 0.5 }}>图集ID：{album._id}</Typography>
+            <CopyAllIcon style={{ width: 12, height: 12, cursor: 'pointer' }} onClick={() => onCopy(album._id)} />
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
             <Typography color='primary' variant='body1' style={{ fontSize: 20 }}>{album.name}</Typography>
             {
-              favoriteLoading !== true && albumFavorited === true ? <Button variant='text' color='primary' style={{ minWidth: 'unset', padding: 4, color: 'gray' }} onClick={onFavorite}><StarIcon color='primary' style={{ width: 24, height: 24 }} /></Button> : null
+              favoriteLoading !== true && albumFavorited === true ? <Button variant='text' color='primary' style={{ minWidth: 'unset', padding: 4, color: 'gray', height: 'fit-content' }} onClick={onFavorite}><StarIcon color='primary' style={{ width: 24, height: 24 }} /></Button> : null
             }
             {
-              favoriteLoading !== true && albumFavorited !== true ? <Button variant='text' color='primary' style={{ minWidth: 'unset', padding: 4, color: 'gray' }} onClick={onFavorite}><StarBorderIcon color='primary' style={{ width: 24, height: 24 }} /></Button> : null
+              favoriteLoading !== true && albumFavorited !== true ? <Button variant='text' color='primary' style={{ minWidth: 'unset', padding: 4, color: 'gray', height: 'fit-content' }} onClick={onFavorite}><StarBorderIcon color='primary' style={{ width: 24, height: 24 }} /></Button> : null
             }
             {
-              favoriteLoading === true ? <Button variant='text' color='primary' style={{ minWidth: 'unset', padding: 4, color: 'gray', fontSize: 12 }}><CircularProgress color='primary' size={24} /></Button> : null
+              favoriteLoading === true ? <Button variant='text' color='primary' style={{ minWidth: 'unset', padding: 4, color: 'gray', height: 'fit-content', fontSize: 12 }}><CircularProgress color='primary' size={24} /></Button> : null
             }
           </div>
 
           <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
             {
-              album.description ? <Typography color='primary' style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', fontSize: 12 }}>{album.description}</Typography> : null
+              album.description ? <Typography color='primary' style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', fontSize: 14 }}>{album.description}</Typography> : null
             }
             {
               album.tag.length > 0 || album.actor.length > 0 ?
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                   {
                     album.tag.map((i, index) => {
-                      return <Typography key={index} color='primary' style={{ fontSize: 12 }}>#{i}</Typography>
+                      return <Typography key={index} color='primary' style={{ fontSize: 14 }}>#{i}</Typography>
                     })
                   }
                   {
                     album.actor.map((i, index) => {
-                      return <Typography key={index} color='primary' style={{ fontSize: 12 }}>#{i}</Typography>
+                      return <Typography key={index} color='primary' style={{ fontSize: 14 }}>#{i}</Typography>
                     })
                   }
                 </div>
@@ -242,7 +242,7 @@ function AlbumView(props) {
           <Typography color='primary' variant='body1' style={{ fontSize: 20 }}>相关作品</Typography>
           <PosterCardMasonry
             breakpointCols={2}
-            imageProps={{ mode: 'Image', objectFit: 'cover' }}
+            imageProps={{ objectFit: 'cover' }}
             cards={albumRecent}
             onClickCard={(card) => navigate(`/album/${card._id}`)}
           />

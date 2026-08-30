@@ -162,8 +162,6 @@ function Media(props) {
   const styleMediaBroken = props.styleMediaBroken
   const styleMediaSuspense = props.styleMediaSuspense
 
-
-
   const extensionMode = extension(src)
 
   const { mediaSrc, mediaSrcPrevious, loading, loadingSuccess, loadingFail, intersectionRef } = useLoadMedia({ src: src, lazy: lazy, onCallbackSize: onCallbackSize })

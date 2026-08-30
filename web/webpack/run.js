@@ -7,8 +7,8 @@ if (process.argv.includes('--dev')) {
   const serverConfig = {
     port: 8000,
     open: true,
-    hot: false,
-    liveReload: false,
+    hot: true,
+    liveReload: true,
     https: false,
     historyApiFallback: true,
     // historyApiFallback: {

@@ -6,7 +6,6 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Fab from '@mui/material/Fab'
-import Chip from '@mui/material/Chip'
 
 import SearchIcon from '@mui/icons-material/Search'
 import CloseIcon from '@mui/icons-material/Close'

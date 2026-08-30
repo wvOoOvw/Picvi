@@ -11,7 +11,6 @@ import SearchIcon from '@mui/icons-material/Search'
 import CloseIcon from '@mui/icons-material/Close'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
 import { useScroll } from './App.ComponentHookPure.Scroll'
 import { useActivation } from './App.ComponentHookPure.Activation'
@@ -32,7 +31,7 @@ function App() {
   const [video, setVideo] = React.useState([])
   const [videoLoadEnable, setVideoLoadEnable] = React.useState()
   const [videoLoading, setVideoLoading] = React.useState()
-  const [videoFilter, setVideoFilter] = React.useState({ name: new URLSearchParams(new URL(window.location.href).search).get('search') || '', latest: false })
+  const [videoFilter, setVideoFilter] = React.useState({ name: new URLSearchParams(new URL(window.location.href).search).get('search') || '', latest: false, status: [1] })
 
   const scrollElementRef = React.useRef()
 
@@ -47,7 +46,7 @@ function App() {
     setVideo([])
     setVideoLoading(true)
 
-    await Fetch.json('/api/app/video/find/list', { filter: { ...videoFilter, status: 1, latest: undefined }, seed: seed, skip: 0, limit: 10 })
+    await Fetch.json('/api/app/video/find/list', { filter: { ...videoFilter, latest: undefined }, seed: seed, skip: 0, limit: 10 })
       .then(res => {
         setVideo(res.data)
         if (res.data.length !== 0) setVideoLoadEnable(true)
@@ -64,7 +63,7 @@ function App() {
   const onFetchVideoScroll = async () => {
     setVideoLoading(true)
 
-    await Fetch.json('/api/app/video/find/list', { filter: { ...videoFilter, status: 1, latest: undefined }, seed: videoSeed, skip: video.length, limit: 10 })
+    await Fetch.json('/api/app/video/find/list', { filter: { ...videoFilter, latest: undefined }, seed: videoSeed, skip: video.length, limit: 10 })
       .then(res => {
         setVideo(i => [...i, ...res.data])
         if (res.data.length === 0) setVideoLoadEnable(false)
@@ -77,12 +76,22 @@ function App() {
     setVideoLoading(false)
   }
 
-  const onRefresh = async () => {
-    await onFetchVideo()
-  }
-
   const onEdit = (video) => {
-    contextApp.dialogsArrayAction.add('VideoInformationOperation', { _id: video._id, onRefresh: async () => await onRefresh() })
+    const onRefresh = async (video) => {
+      contextApp.loadingArrayAction.add('VideoInformationEdit')
+
+      await Fetch.json('/api/app/video/find', { video_id: video._id })
+        .then(res => {
+          setVideo(i => i.map(n => n._id === res.data._id ? res.data : n))
+        })
+        .catch(res => {
+          setVideo(i => i.filter(n => n._id !== video._id))
+        })
+
+      contextApp.loadingArrayAction.remove('VideoInformationEdit')
+    }
+
+    contextApp.dialogsArrayAction.add('VideoInformationOperation', { _id: video._id, onRefresh: async () => await onRefresh(video) })
   }
 
   const onDelete = (video) => {
@@ -99,7 +108,7 @@ function App() {
 
       contextApp.loadingArrayAction.remove('VideoInformationDelete')
 
-      onRefresh()
+      onFetchVideoRefresh(video)
     }
 
     contextApp.dialogsArrayAction.add('Confirm', { content: '是否确认删除当前作品', onConfirm: onConfirm })
@@ -141,7 +150,7 @@ function App() {
         <div style={{ width: '100%', maxWidth: 1200, height: 'fit-content' }}>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-            <Typography color='primary' style={{ fontSize: 28 }}>视频</Typography>
+            <Typography color='primary' style={{ fontSize: 28 }}>漫画</Typography>
             <CloseIcon color='primary' style={{ width: 32, height: 32, cursor: 'pointer' }} onClick={onClose} />
           </div>
 
@@ -151,7 +160,18 @@ function App() {
               <Button style={{ flexShrink: 0, minWidth: 'unset', padding: '4px 8px', fontSize: 14, lineHeight: '24px' }} variant={videoFilter.latest ? 'contained' : 'text'} onClick={() => setVideoFilter({ ...videoFilter, latest: !videoFilter.latest })}>最新发布</Button>
             </div>
             <div style={{ width: 'fit-content', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
-              <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={onFetchVideo}><RefreshIcon style={{ width: 24, height: 24 }} /></Button>
+              {
+                contextApp.user.subscription === 'administrator' ?
+                  <>
+                    {
+                      videoFilter.status.includes(0) ? <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={() => setVideoFilter({ ...videoFilter, status: [1] })}>未发布</Button> : null
+                    }
+                    {
+                      videoFilter.status.includes(1) ? <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={() => setVideoFilter({ ...videoFilter, status: [0] })}>已发布</Button> : null
+                    }
+                  </>
+                  : null
+              }
               {
                 videoFilter.name === '' ?
                   <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={() => contextApp.dialogsArrayAction.add('VideoFilter', { text: videoFilter.name, onConfirm: (text) => setVideoFilter({ ...videoFilter, name: text }) })}>
@@ -167,6 +187,7 @@ function App() {
                   </Button>
                   : null
               }
+              <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={onFetchVideo}><RefreshIcon style={{ width: 24, height: 24 }} /></Button>
             </div>
           </div>
 

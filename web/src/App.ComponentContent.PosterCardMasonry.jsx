@@ -24,9 +24,19 @@ function PosterCardMasonryItem(props) {
   const onDelete = props.onDelete
 
   const emptyImageMemo = React.useMemo(() => emptyImage(), [])
+  const [hovered, setHovered] = React.useState(false)
 
   const Component =
-    <Card style={{ borderRadius: 16 }}>
+    <Card
+      style={{
+        borderRadius: 16,
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+        transform: hovered ? 'translateY(-6px) scale(1.02)' : undefined,
+        boxShadow: hovered ? '0 12px 24px rgba(0, 0, 0, 0.2)' : undefined
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       <CardActionArea style={{ position: 'relative' }} onClick={() => onClickCard(card)}>
         <div style={{ position: 'relative' }}>
           {
@@ -42,7 +52,16 @@ function PosterCardMasonryItem(props) {
               : null
           }
           {
-            card.poster[0] === undefined ? <img src={emptyImageMemo} style={{ display: 'block', width: '100%' }} /> : null
+            card.poster[0] === undefined ?
+              <Media
+                lazy
+                src={emptyImageMemo}
+                loadingSize={32}
+                styleMediaVisible={{ width: '100%', aspectRatio: '1 / 1' }}
+                styleMediaInvisible={{ width: '100%', aspectRatio: '1 / 1' }}
+                {...imageProps}
+              />
+              : null
           }
           {
             card.poster[0] === undefined ? <Button variant='contained' component='div' color='inherit' style={{ minWidth: 'unset', padding: '4px 12px', fontSize: 10, opacity: 0.5, position: 'absolute', top: 8, right: 8 }}>暂无预览图</Button> : null

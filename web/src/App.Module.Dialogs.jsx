@@ -34,7 +34,8 @@ function App() {
 
   const contextApp = React.useContext(ContextApp)
 
-  React.useEffect(() => { contextApp.setDialogsArray([]) }, [pathname])
+  // React.useEffect(() => { contextApp.setDialogsArray([]) }, [pathname])
+  // React.useEffect(() => { contextApp.setDialogsArray([{ name: 'Subscribe' }]) }, [])
 
   const Component =
     <>
@@ -58,7 +59,7 @@ function App() {
 
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('System')}><System /></Suspense>
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('Subscribe')}><Subscribe /></Suspense>
-      
+
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('SubscribeviewSelector')}><SubscribeviewSelector /></Suspense>
     </>
 
