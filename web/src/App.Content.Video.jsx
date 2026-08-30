@@ -150,7 +150,7 @@ function App() {
         <div style={{ width: '100%', maxWidth: 1200, height: 'fit-content' }}>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-            <Typography color='primary' style={{ fontSize: 28 }}>漫画</Typography>
+            <Typography color='primary' style={{ fontSize: 28 }}>视频</Typography>
             <CloseIcon color='primary' style={{ width: 32, height: 32, cursor: 'pointer' }} onClick={onClose} />
           </div>
 
@@ -249,7 +249,7 @@ function App() {
         active === true ?
           ReactDOM.createPortal(
             <>
-              <Fab disabled={scrollTop === 0} color='primary' style={{ position: 'fixed', bottom: 24, right: 24, opacity: scrollTop > 0 ? 1 : 0, transition: '0.5s all' }} onClick={onScrollTop}><ArrowUpwardIcon /></Fab>
+              <Fab disabled={scrollTop === 0} color='primary' style={{ position: 'fixed', bottom: 24, right: 12, width: 48, height: 48, opacity: scrollTop > 0 ? 1 : 0, transition: '0.5s all' }} onClick={onScrollTop}><ArrowUpwardIcon /></Fab>
             </>
             , document.body)
           : null

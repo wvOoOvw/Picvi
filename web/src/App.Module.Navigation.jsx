@@ -30,7 +30,7 @@ function App() {
   }, [pathname, scrollIng])
 
   const Component =
-    <Paper style={{ position: 'fixed', zIndex: 100, left: 0, right: 0, bottom: open ? 24 : 12, width: 'fit-content', display: 'flex', gap: 12, justifyContent: 'center', alignItems: 'center', padding: '4px 12px', margin: 'auto', borderRadius: 120, background: 'white', opacity: open ? 1 : 0, pointerEvents: open ? 'all' : 'none', transition: '0.5s all' }}>
+    <Paper style={{ position: 'fixed', zIndex: 100, left: 0, right: 0, bottom: open ? 24 : 12, width: 'fit-content', display: 'flex', gap: 8, justifyContent: 'center', alignItems: 'center', padding: '4px 12px', margin: 'auto', borderRadius: 120, background: 'white', opacity: open ? 1 : 0, pointerEvents: open ? 'all' : 'none', transition: '0.5s all' }}>
       <IconButton onClick={() => onLink('/')}>
         <HomeIcon color='primary' />
       </IconButton>

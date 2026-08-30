@@ -8,7 +8,6 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Fab from '@mui/material/Fab'
-import IconButton from '@mui/material/IconButton'
 import Divider from '@mui/material/Divider'
 import Chip from '@mui/material/Chip'
 
@@ -18,7 +17,6 @@ import EditIcon from '@mui/icons-material/Edit'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import LogoutIcon from '@mui/icons-material/Logout'
 import SettingsIcon from '@mui/icons-material/Settings'
-import CameraAltIcon from '@mui/icons-material/CameraAlt'
 import CopyAllIcon from '@mui/icons-material/CopyAll'
 import GradeIcon from '@mui/icons-material/Grade'
 
@@ -438,36 +436,36 @@ function User(props) {
               src={LandingWebp}
               objectFit='cover'
               loadingSize={32}
-              style={{ width: '100%', height: '100%', position: 'absolute', left: 0, top: 0, borderRadius: '0px 0px 16px 16px', overflow: 'hidden', boxShadow: '0px -4px 12px gray' }}
+              style={{ width: '100%', height: '100%', position: 'absolute', left: 0, top: 0, borderRadius: '0px 0px 16px 16px', overflow: 'hidden' }}
             />
+            <div style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', borderRadius: '0px 0px 16px 16px', background: 'linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.2) 100%)', pointerEvents: 'none' }} />
           </div>
 
-          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 24, position: 'relative', padding: 24, paddingBottom: 96 }}>
-            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <Typography color='primary' style={{ fontSize: 24 }}>{user.credential}</Typography>
-                <Chip label={subscription.find(i => i.value === user.subscription)?.name} style={{ minWidth: 64 }} onClick={onSubscribe}></Chip>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Typography color='primary' style={{ fontSize: 14 }}>ID:</Typography>
-                <Typography color='primary' style={{ fontSize: 14 }}>{user._id}</Typography>
-                <Button size='small' onClick={() => onCopy(user._id)}>
-                  <CopyAllIcon style={{ fontSize: 16, marginRight: 4 }} />
-                  <span style={{ fontSize: 14 }}>复制</span>
-                </Button>
+          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 20, position: 'relative', padding: 24, paddingBottom: 96 }}>
+            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 10, marginTop: -44 }}>
+              <Avatar style={{ width: 72, height: 72, fontSize: 28, fontWeight: 'bolder', background: contextApp.theme.palette.primary.main, color: 'rgba(255, 255, 255, 1)', border: '4px solid rgba(255, 255, 255, 1)', boxShadow: '0 4px 16px -4px rgba(0, 0, 0, 0.2)' }}>{user.credential?.charAt(0)?.toUpperCase()}</Avatar>
+              <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+                <Typography color='primary' style={{ fontSize: 24, fontWeight: 'bolder' }}>{user.credential}</Typography>
+                <Chip color='primary' style={{ fontSize: 12, color: 'white' }} label={subscription.find(i => i.value === user.subscription).name} onClick={onSubscribe}></Chip>
               </div>
             </div>
-            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8 }}>
+              <Typography color='primary' style={{ fontSize: 14 }}>ID:</Typography>
+              <Typography color='primary' style={{ fontSize: 14 }}>{user._id}</Typography>
+              <Button size='small' style={{ minWidth: 'unset', padding: '2px 6px' }} onClick={() => onCopy(user._id)}>
+                <CopyAllIcon style={{ fontSize: 14, marginRight: 2 }} />
+                <span style={{ fontSize: 12 }}>复制</span>
+              </Button>
+            </div>
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'nowrap', gap: 8, marginBottom: 4 }}>
               {
                 user.subscription === 'administrator' ?
-                  <>
-                    <Button color='primary' variant='contained' style={{ flexShrink: 0, minWidth: 'unset', padding: '4px 8px', fontSize: 14 }} onClick={onSystem}><SettingsIcon style={{ marginRight: 4 }} />设置</Button>
-                  </>
+                  <Button color='primary' variant='outlined' style={{ flexFlow: 0, flexShrink: 1, minWidth: 0, borderRadius: 8, overflow: 'hidden' }} onClick={onSystem}><SettingsIcon style={{ fontSize: 16, marginRight: 4, flexShrink: 0 }} /><span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>系统设置</span></Button>
                   : null
               }
-              <Button color='primary' variant='contained' style={{ flexShrink: 0, minWidth: 'unset', padding: '4px 8px', fontSize: 14 }} onClick={onSubscribe}><GradeIcon style={{ marginRight: 4 }} />升级订阅</Button>
-              <Button color='primary' variant='contained' style={{ flexShrink: 0, minWidth: 'unset', padding: '4px 8px', fontSize: 14 }} onClick={onEdit}><EditIcon style={{ marginRight: 4 }} />修改密码</Button>
-              <Button color='primary' variant='contained' style={{ flexShrink: 0, minWidth: 'unset', padding: '4px 8px', fontSize: 14 }} onClick={onExit}><LogoutIcon style={{ marginRight: 4 }} />退出账号</Button>
+              <Button color='primary' variant='outlined' style={{ flexFlow: 0, flexShrink: 1, minWidth: 0, borderRadius: 8, overflow: 'hidden' }} onClick={onSubscribe}><GradeIcon style={{ fontSize: 16, marginRight: 4, flexShrink: 0 }} /><span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>升级订阅</span></Button>
+              <Button color='primary' variant='outlined' style={{ flexFlow: 0, flexShrink: 1, minWidth: 0, borderRadius: 8, overflow: 'hidden' }} onClick={onEdit}><EditIcon style={{ fontSize: 16, marginRight: 4, flexShrink: 0 }} /><span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>修改密码</span></Button>
+              <Button color='primary' variant='outlined' style={{ flexFlow: 0, flexShrink: 1, minWidth: 0, borderRadius: 8, overflow: 'hidden' }} onClick={onExit}><LogoutIcon style={{ fontSize: 16, marginRight: 4, flexShrink: 0 }} /><span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>退出账号</span></Button>
             </div>
 
             <div>
@@ -527,7 +525,7 @@ function User(props) {
         active === true ?
           ReactDOM.createPortal(
             <>
-              <Fab disabled={scrollTop === 0} color='primary' style={{ position: 'fixed', bottom: 24, right: 24, opacity: scrollTop > 0 ? 1 : 0, transition: '0.5s all' }} onClick={onScrollTop}><ArrowUpwardIcon /></Fab>
+              <Fab disabled={scrollTop === 0} color='primary' style={{ position: 'fixed', bottom: 24, right: 12, width: 48, height: 48, opacity: scrollTop > 0 ? 1 : 0, transition: '0.5s all' }} onClick={onScrollTop}><ArrowUpwardIcon /></Fab>
             </>
             , document.body)
           : null
