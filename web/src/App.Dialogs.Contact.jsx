@@ -12,7 +12,7 @@ import Tab from '@mui/material/Tab'
 import { Context as ContextApp } from './App'
 
 import ContactWXMP_1 from '../static/image/ContactWXMP_1.jpg'
-import ContactQQ_2 from '../static/image/ContactQQ_2.jpg'
+import ContactQQ_1 from '../static/image/ContactQQ_1.jpg'
 
 function App() {
   const contextApp = React.useContext(ContextApp)
@@ -39,7 +39,7 @@ function App() {
           tab === 0 ? <img src={ContactWXMP_1} style={{ width: '80%', maxWidth: 320, margin: 'auto' }} /> : null
         }
         {
-          tab === 1 ? <img src={ContactQQ_2} style={{ width: '80%', maxWidth: 320, margin: 'auto' }} /> : null
+          tab === 1 ? <img src={ContactQQ_1} style={{ width: '80%', maxWidth: 320, margin: 'auto' }} /> : null
         }
       </DialogContent>
       <DialogActions>

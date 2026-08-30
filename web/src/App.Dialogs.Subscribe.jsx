@@ -13,6 +13,7 @@ import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
 import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
+import Chip from '@mui/material/Chip'
 
 import { Context as ContextApp } from './App'
 
@@ -20,7 +21,7 @@ import { copy } from './utils.copy'
 
 import { subscription } from '../../common/subscription'
 
-import ContactQQ_2 from '../static/image/ContactQQ_2.jpg'
+import ContactQQ_1 from '../static/image/ContactQQ_1.jpg'
 import ContactWXMP_1 from '../static/image/ContactWXMP_1.jpg'
 
 function CardGroupCash(props) {
@@ -54,36 +55,56 @@ function CardGroupCash(props) {
 function CardCurrentSubscription() {
   const contextApp = React.useContext(ContextApp)
 
-  const userSubscriptionExpireTime = contextApp.user.subscriptionExpireTime
-
   const subscriptionPlan = subscription.find(plan => plan.value === contextApp.user.subscription)
 
-  const isExpired = userSubscriptionExpireTime && new Date(userSubscriptionExpireTime) < new Date()
-  const isPermanent = !userSubscriptionExpireTime || userSubscriptionExpireTime === 0
+  const isExpired = contextApp.user.subscriptionExpireTime && new Date(contextApp.user.subscriptionExpireTime) < new Date()
 
   const Component =
     <Card>
-      <CardContent style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <Typography variant='body1' style={{ fontSize: 16, marginBottom: 8 }}>当前订阅状态</Typography>
-        <Divider style={{ width: '100%' }} />
-        <Typography variant='body2' style={{ fontSize: 18, fontWeight: 'bold' }}>
+      <CardContent style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant='body1' style={{ fontSize: 16, opacity: 0.5 }}>当前订阅状态</Typography>
           {
-            isExpired ? `${subscriptionPlan.name}（已过期）` : subscriptionPlan.name
-          }
-        </Typography>
-        <Typography variant='body2' style={{ opacity: 0.6, fontSize: 14 }}>
-          {
-            isExpired ? '您的订阅已过期，请重新订阅' : subscriptionPlan.description
-          }
-        </Typography>
-        <Typography variant='body2' style={{ opacity: 0.6, fontSize: 14 }}>
-          {
-            isPermanent === true ? '到期时间：永久有效' : null
+            isExpired === true ? <Chip variant='outlined' color='error' label='已过期'></Chip> : null
           }
           {
-            isPermanent !== true ? `到期时间：${new Date(userSubscriptionExpireTime).toLocaleDateString()}${isExpired ? '（已过期）' : null}` : null
+            isExpired !== true ? <Chip variant='outlined' color='success' label='生效中'></Chip> : null
           }
-        </Typography>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant='body1' style={{ fontSize: 16, opacity: 0.5 }}>订阅角色</Typography>
+          <Typography variant='body2' style={{ fontSize: 16, fontWeight: 'bold' }}>{subscriptionPlan.name}</Typography>
+        </div>
+        
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant='body1' style={{ fontSize: 16, opacity: 0.5 }}>订阅内容</Typography>
+          <Typography variant='body2' style={{ fontSize: 16, fontWeight: 'bold' }}>{subscriptionPlan.description}</Typography>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant='body2' style={{ fontSize: 14 }}>
+            到期时间：
+          </Typography>
+          <Typography variant='body2' style={{ fontSize: 14 }}>
+            {
+              isExpired === true ? '您的订阅已过期，请重新订阅' : null
+            }
+            {
+              isExpired !== true ?
+                <>
+                  {
+                    contextApp.user.subscriptionExpireTime === 0 ? '永久有效' : null
+                  }
+                  {
+                    contextApp.user.subscriptionExpireTime !== 0 ? `${new Date(contextApp.user.subscriptionExpireTime).toLocaleDateString()}${isExpired ? '（已过期）' : null}` : null
+                  }
+                </>
+                : null
+            }
+
+          </Typography>
+        </div>
       </CardContent>
     </Card>
 
@@ -111,7 +132,7 @@ function CardContactCash() {
         <Typography variant='body2' style={{ textAlign: 'center' }}>将ID发给下方QQ客服（点击复制）</Typography>
         <Button variant='outlined' color='primary' size='small' style={{ fontSize: 12 }} onClick={() => onCopy(contextApp.user._id)}>ID {contextApp.user._id}</Button>
         <Divider style={{ width: '100%' }} />
-        <img src={ContactQQ_2} style={{ width: '100%' }} />
+        <img src={ContactQQ_1} style={{ width: '100%' }} />
         <img src={ContactWXMP_1} style={{ width: '100%' }} />
         <Divider style={{ width: '100%' }} />
         <Typography variant='body2' style={{ textAlign: 'center', fontSize: 12 }}>添加不上时，关注下方公众号，私信留下QQ号或微信号！</Typography>
@@ -162,19 +183,12 @@ function App() {
             <StepLabel style={{ whiteSpace: 'nowrap', cursor: 'pointer' }} onClick={() => step > 2 ? setStep(2) : undefined}>联系客服</StepLabel>
           </Step>
         </Stepper>
-        <div style={{ width: '100%', maxWidth: 320, margin: 'auto' }}>
+        <div style={{ width: '100%', margin: 'auto' }}>
           {
             step === 0 ?
               <>
                 <CardCurrentSubscription />
-                <Button
-                  variant='contained'
-                  color='primary'
-                  style={{ width: '100%', marginTop: 16 }}
-                  onClick={() => setStep(1)}
-                >
-                  选择订阅套餐
-                </Button>
+                <Button variant='contained' color='primary' style={{ width: '100%', marginTop: 16 }} onClick={() => setStep(1)}>选择订阅套餐</Button>
               </>
               : null
           }

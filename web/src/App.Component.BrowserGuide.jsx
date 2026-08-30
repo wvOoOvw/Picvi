@@ -21,18 +21,6 @@ export default function BrowserGuide() {
       }}
     >
       <Container maxWidth="sm" sx={{ textAlign: 'center' }}>
-        <Box
-          component="img"
-          src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=右上角箭头图标指引浏览器打开，简洁明了的图标设计，适合移动端显示&image_size=square"
-          alt="浏览器指引"
-          sx={{
-            width: 200,
-            height: 200,
-            marginBottom: 3,
-            borderRadius: 2
-          }}
-        />
-        
         <Typography
           variant="h4"
           sx={{

@@ -57,7 +57,7 @@ function App() {
   const Component =
     <>
       {
-        contextApp.user && contextApp.user.role === 'admin' ?
+        contextApp.user && contextApp.user.subscription === 'administrator' ?
           <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', padding: 24 }}>
             <div style={{ width: '100%', maxWidth: 880, height: 'fit-content' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 20 }}>
