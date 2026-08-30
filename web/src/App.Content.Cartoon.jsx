@@ -174,7 +174,7 @@ function App() {
               }
               {
                 cartoonFilter.name === '' ?
-                  <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={() => contextApp.dialogsArrayAction.add('CartoonFilter', { text: cartoonFilter.name, onConfirm: (text) => setCartoonFilter({ ...cartoonFilter, name: text }) })}>
+                  <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={() => contextApp.dialogsArrayAction.add('TextFilter', { text: cartoonFilter.name, onConfirm: (text) => setCartoonFilter({ ...cartoonFilter, name: text }) })}>
                     <SearchIcon style={{ width: 24, height: 24 }} />
                   </Button>
                   : null

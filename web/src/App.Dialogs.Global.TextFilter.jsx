@@ -16,18 +16,18 @@ function App() {
   const [text, setText] = React.useState('')
 
   const onConfirm = () => {
-    contextApp.dialogsArrayAction.props('VideoFilter').onConfirm(text)
-    contextApp.dialogsArrayAction.remove('VideoFilter')
+    contextApp.dialogsArrayAction.props('TextFilter').onConfirm(text)
+    contextApp.dialogsArrayAction.remove('TextFilter')
   }
 
   React.useEffect(() => {
-    if (contextApp.dialogsArrayAction.exist('VideoFilter')) {
-      setText(contextApp.dialogsArrayAction.props('VideoFilter').text)
+    if (contextApp.dialogsArrayAction.exist('TextFilter')) {
+      setText(contextApp.dialogsArrayAction.props('TextFilter').text)
     }
-  }, [contextApp.dialogsArrayAction.exist('VideoFilter')])
+  }, [contextApp.dialogsArrayAction.exist('TextFilter')])
 
   const Component =
-    <Dialog open={contextApp.dialogsArrayAction.exist('VideoFilter')} onClose={() => contextApp.dialogsArrayAction.remove('VideoFilter')}>
+    <Dialog open={contextApp.dialogsArrayAction.exist('TextFilter')} onClose={() => contextApp.dialogsArrayAction.remove('TextFilter')}>
       <DialogTitle>
         <Typography color='primary' style={{ fontSize: 20 }}>输入关键词筛选</Typography>
       </DialogTitle>
@@ -35,7 +35,7 @@ function App() {
         <TextField fullWidth autoComplete='off' size='small' variant='outlined' value={text} onChange={e => setText(e.target.value)} />
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => contextApp.dialogsArrayAction.remove('VideoFilter')}>取消</Button>
+        <Button onClick={() => contextApp.dialogsArrayAction.remove('TextFilter')}>取消</Button>
         <Button onClick={() => onConfirm()}>确认</Button>
       </DialogActions>
     </Dialog>

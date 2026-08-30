@@ -174,7 +174,7 @@ function App() {
               }
               {
                 videoFilter.name === '' ?
-                  <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={() => contextApp.dialogsArrayAction.add('VideoFilter', { text: videoFilter.name, onConfirm: (text) => setVideoFilter({ ...videoFilter, name: text }) })}>
+                  <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={() => contextApp.dialogsArrayAction.add('TextFilter', { text: videoFilter.name, onConfirm: (text) => setVideoFilter({ ...videoFilter, name: text }) })}>
                     <SearchIcon style={{ width: 24, height: 24 }} />
                   </Button>
                   : null

@@ -490,7 +490,7 @@ function User(props) {
                 <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={() => setFilter({ name: '' })}><RefreshIcon style={{ width: 24, height: 24 }} /></Button>
                 {
                   filter.name === '' ?
-                    <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={() => contextApp.dialogsArrayAction.add('AlbumFilter', { text: filter.name, onConfirm: (text) => setFilter({ ...filter, name: text }) })}>
+                    <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={() => contextApp.dialogsArrayAction.add('TextFilter', { text: filter.name, onConfirm: (text) => setFilter({ ...filter, name: text }) })}>
                       <SearchIcon style={{ width: 24, height: 24 }} />
                     </Button>
                     : null

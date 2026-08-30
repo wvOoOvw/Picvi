@@ -174,7 +174,7 @@ function App() {
               }
               {
                 albumFilter.name === '' ?
-                  <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={() => contextApp.dialogsArrayAction.add('AlbumFilter', { text: albumFilter.name, onConfirm: (text) => setAlbumFilter({ ...albumFilter, name: text }) })}>
+                  <Button style={{ minWidth: 'unset', padding: '4px 8px' }} onClick={() => contextApp.dialogsArrayAction.add('TextFilter', { text: albumFilter.name, onConfirm: (text) => setAlbumFilter({ ...albumFilter, name: text }) })}>
                     <SearchIcon style={{ width: 24, height: 24 }} />
                   </Button>
                   : null
