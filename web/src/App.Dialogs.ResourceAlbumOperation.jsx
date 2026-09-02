@@ -38,12 +38,12 @@ function App() {
   const onFetchAlbum = async () => {
     setAlbumLoading(true)
 
-    await Fetch.json('/api/app/album/find', { album_id: contextApp.dialogsArrayAction.props('AlbumInformationOperation')._id })
+    await Fetch.json('/api/app/album/find', { album_id: contextApp.dialogsArrayAction.props('ResourceAlbumOperation')._id })
       .then(res => {
         setAlbum(res.data)
       })
       .catch(res => {
-        contextApp.dialogsArrayAction.remove('AlbumInformationOperation')
+        contextApp.dialogsArrayAction.remove('ResourceAlbumOperation')
         contextApp.messageArrayAction.add('查询错误')
       })
 
@@ -51,12 +51,12 @@ function App() {
   }
 
   const onUpdate = async () => {
-    contextApp.loadingArrayAction.add('AlbumInformationOperation')
+    contextApp.loadingArrayAction.add('ResourceAlbumOperation')
 
-    if (contextApp.dialogsArrayAction.props('AlbumInformationOperation') !== undefined) {
-      await Fetch.json('/api/app/admin/album/update', { ...album, album_id: contextApp.dialogsArrayAction.props('AlbumInformationOperation')._id, _id: undefined })
+    if (contextApp.dialogsArrayAction.props('ResourceAlbumOperation') !== undefined) {
+      await Fetch.json('/api/app/admin/album/update', { ...album, album_id: contextApp.dialogsArrayAction.props('ResourceAlbumOperation')._id, _id: undefined })
         .then(res => {
-          contextApp.dialogsArrayAction.remove('AlbumInformationOperation')
+          contextApp.dialogsArrayAction.remove('ResourceAlbumOperation')
           contextApp.messageArrayAction.add('更新成功')
         })
         .catch(res => {
@@ -64,10 +64,10 @@ function App() {
         })
     }
 
-    if (contextApp.dialogsArrayAction.props('AlbumInformationOperation') === undefined) {
+    if (contextApp.dialogsArrayAction.props('ResourceAlbumOperation') === undefined) {
       await Fetch.json('/api/app/admin/album/insert', { ...album })
         .then(res => {
-          contextApp.dialogsArrayAction.remove('AlbumInformationOperation')
+          contextApp.dialogsArrayAction.remove('ResourceAlbumOperation')
           contextApp.messageArrayAction.add('创建成功')
         })
         .catch(res => {
@@ -75,41 +75,41 @@ function App() {
         })
     }
 
-    if (contextApp.dialogsArrayAction.props('AlbumInformationOperation') && contextApp.dialogsArrayAction.props('AlbumInformationOperation').onRefresh) {
-      await contextApp.dialogsArrayAction.props('AlbumInformationOperation').onRefresh()
+    if (contextApp.dialogsArrayAction.props('ResourceAlbumOperation') && contextApp.dialogsArrayAction.props('ResourceAlbumOperation').onRefresh) {
+      await contextApp.dialogsArrayAction.props('ResourceAlbumOperation').onRefresh()
     }
 
-    contextApp.loadingArrayAction.remove('AlbumInformationOperation')
+    contextApp.loadingArrayAction.remove('ResourceAlbumOperation')
   }
 
   React.useEffect(() => {
-    if (contextApp.dialogsArrayAction.exist('AlbumInformationOperation')) {
+    if (contextApp.dialogsArrayAction.exist('ResourceAlbumOperation')) {
       setStep(0)
       setAlbum({ ...albumDefult })
       setAlbumLoading(false)
       onFetchOption()
     }
 
-    if (contextApp.dialogsArrayAction.props('AlbumInformationOperation')) {
+    if (contextApp.dialogsArrayAction.props('ResourceAlbumOperation')) {
       onFetchAlbum()
     }
-  }, [contextApp.dialogsArrayAction.exist('AlbumInformationOperation')])
+  }, [contextApp.dialogsArrayAction.exist('ResourceAlbumOperation')])
 
   React.useEffect(() => {
-    if (contextApp.dialogsArrayAction.exist('AlbumInformationOperation') && document.getElementById('step' + step)) {
+    if (contextApp.dialogsArrayAction.exist('ResourceAlbumOperation') && document.getElementById('step' + step)) {
       document.getElementById('step' + step).scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
     }
-  }, [contextApp.dialogsArrayAction.exist('AlbumInformationOperation'), step])
+  }, [contextApp.dialogsArrayAction.exist('ResourceAlbumOperation'), step])
 
   const Component =
-    <Dialog open={contextApp.dialogsArrayAction.exist('AlbumInformationOperation')} onClose={() => contextApp.dialogsArrayAction.remove('AlbumInformationOperation')} sx={{ '& .MuiDialog-paper': { width: 600, maxWidth: 'unset' } }}>
+    <Dialog open={contextApp.dialogsArrayAction.exist('ResourceAlbumOperation')} onClose={() => contextApp.dialogsArrayAction.remove('ResourceAlbumOperation')} sx={{ '& .MuiDialog-paper': { width: 600, maxWidth: 'unset' } }}>
       <DialogTitle>
         <Typography color='primary' style={{ fontSize: 20 }}>
           {
-            contextApp.dialogsArrayAction.props('AlbumInformationOperation') !== undefined ? '修改图集' : null
+            contextApp.dialogsArrayAction.props('ResourceAlbumOperation') !== undefined ? '修改图集' : null
           }
           {
-            contextApp.dialogsArrayAction.props('AlbumInformationOperation') === undefined ? '创建图集' : null
+            contextApp.dialogsArrayAction.props('ResourceAlbumOperation') === undefined ? '创建图集' : null
           }
         </Typography>
       </DialogTitle>

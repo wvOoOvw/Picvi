@@ -29,15 +29,15 @@ function App() {
   }
 
   const onPickAlbum = () => {
-    contextApp.dialogsArrayAction.remove('PublishPick').add('AlbumInformationOperation')
+    contextApp.dialogsArrayAction.remove('PublishPick').add('ResourceAlbumOperation')
   }
 
   const onPickCartoon = () => {
-    contextApp.dialogsArrayAction.remove('PublishPick').add('CartoonInformationOperation')
+    contextApp.dialogsArrayAction.remove('PublishPick').add('ResourceCartoonOperation')
   }
 
   const onPickVideo = () => {
-    contextApp.dialogsArrayAction.remove('PublishPick').add('VideoInformationOperation')
+    contextApp.dialogsArrayAction.remove('PublishPick').add('ResourceVideoOperation')
   }
 
   const Component =

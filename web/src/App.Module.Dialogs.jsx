@@ -5,11 +5,9 @@ import { Suspense } from './App.ComponentPure.Suspense'
 
 import { Context as ContextApp } from './App'
 
-const AlbumInformationOperation = React.lazy(() => import('./App.Dialogs.AlbumInformationOperation'))
-
-const VideoInformationOperation = React.lazy(() => import('./App.Dialogs.VideoInformationOperation'))
-
-const CartoonInformationOperation = React.lazy(() => import('./App.Dialogs.CartoonInformationOperation'))
+const ResourceAlbumOperation = React.lazy(() => import('./App.Dialogs.ResourceAlbumOperation'))
+const ResourceCartoonOperation = React.lazy(() => import('./App.Dialogs.ResourceCartoonOperation'))
+const ResourceVideoOperation = React.lazy(() => import('./App.Dialogs.ResourceVideoOperation'))
 
 const UserLogin = React.lazy(() => import('./App.Dialogs.UserLogin'))
 const UserRegister = React.lazy(() => import('./App.Dialogs.UserRegister'))
@@ -37,11 +35,9 @@ function App() {
   const Component =
     <>
 
-      <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('AlbumInformationOperation')}><AlbumInformationOperation /></Suspense>
-
-      <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('VideoInformationOperation')}><VideoInformationOperation /></Suspense>
-
-      <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('CartoonInformationOperation')}><CartoonInformationOperation /></Suspense>
+      <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('ResourceAlbumOperation')}><ResourceAlbumOperation /></Suspense>
+      <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('ResourceCartoonOperation')}><ResourceCartoonOperation /></Suspense>
+      <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('ResourceVideoOperation')}><ResourceVideoOperation /></Suspense>
 
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('UserLogin')}><UserLogin /></Suspense>
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('UserRegister')}><UserRegister /></Suspense>

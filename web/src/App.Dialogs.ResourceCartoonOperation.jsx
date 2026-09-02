@@ -38,12 +38,12 @@ function App() {
   const onFetchCartoon = async () => {
     setCartoonLoading(true)
 
-    await Fetch.json('/api/app/cartoon/find', { cartoon_id: contextApp.dialogsArrayAction.props('CartoonInformationOperation')._id })
+    await Fetch.json('/api/app/cartoon/find', { cartoon_id: contextApp.dialogsArrayAction.props('ResourceCartoonOperation')._id })
       .then(res => {
         setCartoon(res.data)
       })
       .catch(res => {
-        contextApp.dialogsArrayAction.remove('CartoonInformationOperation')
+        contextApp.dialogsArrayAction.remove('ResourceCartoonOperation')
         contextApp.messageArrayAction.add('查询错误')
       })
 
@@ -51,12 +51,12 @@ function App() {
   }
 
   const onUpdate = async () => {
-    contextApp.loadingArrayAction.add('CartoonInformationOperation')
+    contextApp.loadingArrayAction.add('ResourceCartoonOperation')
 
-    if (contextApp.dialogsArrayAction.props('CartoonInformationOperation') !== undefined) {
-      await Fetch.json('/api/app/admin/cartoon/update', { ...cartoon, cartoon_id: contextApp.dialogsArrayAction.props('CartoonInformationOperation')._id, _id: undefined })
+    if (contextApp.dialogsArrayAction.props('ResourceCartoonOperation') !== undefined) {
+      await Fetch.json('/api/app/admin/cartoon/update', { ...cartoon, cartoon_id: contextApp.dialogsArrayAction.props('ResourceCartoonOperation')._id, _id: undefined })
         .then(res => {
-          contextApp.dialogsArrayAction.remove('CartoonInformationOperation')
+          contextApp.dialogsArrayAction.remove('ResourceCartoonOperation')
           contextApp.messageArrayAction.add('更新成功')
         })
         .catch(res => {
@@ -64,10 +64,10 @@ function App() {
         })
     }
 
-    if (contextApp.dialogsArrayAction.props('CartoonInformationOperation') === undefined) {
+    if (contextApp.dialogsArrayAction.props('ResourceCartoonOperation') === undefined) {
       await Fetch.json('/api/app/admin/cartoon/insert', { ...cartoon })
         .then(res => {
-          contextApp.dialogsArrayAction.remove('CartoonInformationOperation')
+          contextApp.dialogsArrayAction.remove('ResourceCartoonOperation')
           contextApp.messageArrayAction.add('创建成功')
         })
         .catch(res => {
@@ -75,41 +75,41 @@ function App() {
         })
     }
 
-    if (contextApp.dialogsArrayAction.props('CartoonInformationOperation') && contextApp.dialogsArrayAction.props('CartoonInformationOperation').onRefresh) {
-      await contextApp.dialogsArrayAction.props('CartoonInformationOperation').onRefresh()
+    if (contextApp.dialogsArrayAction.props('ResourceCartoonOperation') && contextApp.dialogsArrayAction.props('ResourceCartoonOperation').onRefresh) {
+      await contextApp.dialogsArrayAction.props('ResourceCartoonOperation').onRefresh()
     }
 
-    contextApp.loadingArrayAction.remove('CartoonInformationOperation')
+    contextApp.loadingArrayAction.remove('ResourceCartoonOperation')
   }
 
   React.useEffect(() => {
-    if (contextApp.dialogsArrayAction.exist('CartoonInformationOperation')) {
+    if (contextApp.dialogsArrayAction.exist('ResourceCartoonOperation')) {
       setStep(0)
       setCartoon({ ...cartoonDefult })
       setCartoonLoading(false)
       onFetchOption()
     }
 
-    if (contextApp.dialogsArrayAction.props('CartoonInformationOperation')) {
+    if (contextApp.dialogsArrayAction.props('ResourceCartoonOperation')) {
       onFetchCartoon()
     }
-  }, [contextApp.dialogsArrayAction.exist('CartoonInformationOperation')])
+  }, [contextApp.dialogsArrayAction.exist('ResourceCartoonOperation')])
 
   React.useEffect(() => {
-    if (contextApp.dialogsArrayAction.exist('CartoonInformationOperation') && document.getElementById('step' + step)) {
+    if (contextApp.dialogsArrayAction.exist('ResourceCartoonOperation') && document.getElementById('step' + step)) {
       document.getElementById('step' + step).scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
     }
-  }, [contextApp.dialogsArrayAction.exist('CartoonInformationOperation'), step])
+  }, [contextApp.dialogsArrayAction.exist('ResourceCartoonOperation'), step])
 
   const Component =
-    <Dialog open={contextApp.dialogsArrayAction.exist('CartoonInformationOperation')} onClose={() => contextApp.dialogsArrayAction.remove('CartoonInformationOperation')} sx={{ '& .MuiDialog-paper': { width: 600, maxWidth: 'unset' } }}>
+    <Dialog open={contextApp.dialogsArrayAction.exist('ResourceCartoonOperation')} onClose={() => contextApp.dialogsArrayAction.remove('ResourceCartoonOperation')} sx={{ '& .MuiDialog-paper': { width: 600, maxWidth: 'unset' } }}>
       <DialogTitle>
         <Typography color='primary' style={{ fontSize: 20 }}>
           {
-            contextApp.dialogsArrayAction.props('CartoonInformationOperation') !== undefined ? '修改图集' : null
+            contextApp.dialogsArrayAction.props('ResourceCartoonOperation') !== undefined ? '修改图集' : null
           }
           {
-            contextApp.dialogsArrayAction.props('CartoonInformationOperation') === undefined ? '创建图集' : null
+            contextApp.dialogsArrayAction.props('ResourceCartoonOperation') === undefined ? '创建图集' : null
           }
         </Typography>
       </DialogTitle>

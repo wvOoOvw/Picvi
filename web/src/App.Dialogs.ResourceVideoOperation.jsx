@@ -38,12 +38,12 @@ function App() {
   const onFetchVideo = async () => {
     setVideoLoading(true)
 
-    await Fetch.json('/api/app/video/find', { video_id: contextApp.dialogsArrayAction.props('VideoInformationOperation')._id })
+    await Fetch.json('/api/app/video/find', { video_id: contextApp.dialogsArrayAction.props('ResourceVideoOperation')._id })
       .then(res => {
         setVideo(res.data)
       })
       .catch(res => {
-        contextApp.dialogsArrayAction.remove('VideoInformationOperation')
+        contextApp.dialogsArrayAction.remove('ResourceVideoOperation')
         contextApp.messageArrayAction.add('查询错误')
       })
 
@@ -51,12 +51,12 @@ function App() {
   }
 
   const onUpdate = async () => {
-    contextApp.loadingArrayAction.add('VideoInformationOperation')
+    contextApp.loadingArrayAction.add('ResourceVideoOperation')
 
-    if (contextApp.dialogsArrayAction.props('VideoInformationOperation') !== undefined) {
-      await Fetch.json('/api/app/admin/video/update', { ...video, video_id: contextApp.dialogsArrayAction.props('VideoInformationOperation')._id, _id: undefined })
+    if (contextApp.dialogsArrayAction.props('ResourceVideoOperation') !== undefined) {
+      await Fetch.json('/api/app/admin/video/update', { ...video, video_id: contextApp.dialogsArrayAction.props('ResourceVideoOperation')._id, _id: undefined })
         .then(res => {
-          contextApp.dialogsArrayAction.remove('VideoInformationOperation')
+          contextApp.dialogsArrayAction.remove('ResourceVideoOperation')
           contextApp.messageArrayAction.add('更新成功')
         })
         .catch(res => {
@@ -64,10 +64,10 @@ function App() {
         })
     }
 
-    if (contextApp.dialogsArrayAction.props('VideoInformationOperation') === undefined) {
+    if (contextApp.dialogsArrayAction.props('ResourceVideoOperation') === undefined) {
       await Fetch.json('/api/app/admin/video/insert', { ...video })
         .then(res => {
-          contextApp.dialogsArrayAction.remove('VideoInformationOperation')
+          contextApp.dialogsArrayAction.remove('ResourceVideoOperation')
           contextApp.messageArrayAction.add('创建成功')
         })
         .catch(res => {
@@ -75,41 +75,41 @@ function App() {
         })
     }
 
-    if (contextApp.dialogsArrayAction.props('VideoInformationOperation') && contextApp.dialogsArrayAction.props('VideoInformationOperation').onRefresh) {
-      await contextApp.dialogsArrayAction.props('VideoInformationOperation').onRefresh()
+    if (contextApp.dialogsArrayAction.props('ResourceVideoOperation') && contextApp.dialogsArrayAction.props('ResourceVideoOperation').onRefresh) {
+      await contextApp.dialogsArrayAction.props('ResourceVideoOperation').onRefresh()
     }
 
-    contextApp.loadingArrayAction.remove('VideoInformationOperation')
+    contextApp.loadingArrayAction.remove('ResourceVideoOperation')
   }
 
   React.useEffect(() => {
-    if (contextApp.dialogsArrayAction.exist('VideoInformationOperation')) {
+    if (contextApp.dialogsArrayAction.exist('ResourceVideoOperation')) {
       setStep(0)
       setVideo({ ...videoDefult })
       setVideoLoading(false)
       onFetchOption()
     }
 
-    if (contextApp.dialogsArrayAction.props('VideoInformationOperation')) {
+    if (contextApp.dialogsArrayAction.props('ResourceVideoOperation')) {
       onFetchVideo()
     }
-  }, [contextApp.dialogsArrayAction.exist('VideoInformationOperation')])
+  }, [contextApp.dialogsArrayAction.exist('ResourceVideoOperation')])
 
   React.useEffect(() => {
-    if (contextApp.dialogsArrayAction.exist('VideoInformationOperation') && document.getElementById('step' + step)) {
+    if (contextApp.dialogsArrayAction.exist('ResourceVideoOperation') && document.getElementById('step' + step)) {
       document.getElementById('step' + step).scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
     }
-  }, [contextApp.dialogsArrayAction.exist('VideoInformationOperation'), step])
+  }, [contextApp.dialogsArrayAction.exist('ResourceVideoOperation'), step])
 
   const Component =
-    <Dialog open={contextApp.dialogsArrayAction.exist('VideoInformationOperation')} onClose={() => contextApp.dialogsArrayAction.remove('VideoInformationOperation')} sx={{ '& .MuiDialog-paper': { width: 600, maxWidth: 'unset' } }}>
+    <Dialog open={contextApp.dialogsArrayAction.exist('ResourceVideoOperation')} onClose={() => contextApp.dialogsArrayAction.remove('ResourceVideoOperation')} sx={{ '& .MuiDialog-paper': { width: 600, maxWidth: 'unset' } }}>
       <DialogTitle>
         <Typography color='primary' style={{ fontSize: 20 }}>
           {
-            contextApp.dialogsArrayAction.props('VideoInformationOperation') !== undefined ? '修改视频' : null
+            contextApp.dialogsArrayAction.props('ResourceVideoOperation') !== undefined ? '修改视频' : null
           }
           {
-            contextApp.dialogsArrayAction.props('VideoInformationOperation') === undefined ? '创建视频' : null
+            contextApp.dialogsArrayAction.props('ResourceVideoOperation') === undefined ? '创建视频' : null
           }
         </Typography>
       </DialogTitle>
