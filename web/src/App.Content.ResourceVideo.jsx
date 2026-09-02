@@ -78,7 +78,7 @@ function App() {
 
   const onEdit = (item) => {
     const onRefresh = async (item) => {
-      contextApp.loadingArrayAction.add('videoInformationEdit')
+      contextApp.loadingArrayAction.add('ResourceVideoEdit')
 
       await Fetch.json('/api/app/video/find', { video_id: item._id })
         .then(res => {
@@ -88,15 +88,15 @@ function App() {
           setList(i => i.filter(n => n._id !== item._id))
         })
 
-      contextApp.loadingArrayAction.remove('videoInformationEdit')
+      contextApp.loadingArrayAction.remove('ResourceVideoEdit')
     }
 
-    contextApp.dialogsArrayAction.add('videoInformationOperation', { _id: item._id, onRefresh: async () => await onRefresh(item) })
+    contextApp.dialogsArrayAction.add('ResourceVideoOperation', { _id: item._id, onRefresh: async () => await onRefresh(item) })
   }
 
   const onDelete = (item) => {
     const onConfirm = async () => {
-      contextApp.loadingArrayAction.add('videoInformationDelete')
+      contextApp.loadingArrayAction.add('ResourceVideoDelete')
 
       await Fetch.json('/api/app/admin/video/delete', { video_id: item._id })
         .then(res => {
@@ -106,7 +106,7 @@ function App() {
           contextApp.messageArrayAction.add(res.message || '系统异常')
         })
 
-      contextApp.loadingArrayAction.remove('videoInformationDelete')
+      contextApp.loadingArrayAction.remove('ResourceVideoDelete')
 
       onFetch()
     }

@@ -78,7 +78,7 @@ function App() {
 
   const onEdit = (item) => {
     const onRefresh = async (item) => {
-      contextApp.loadingArrayAction.add('cartoonInformationEdit')
+      contextApp.loadingArrayAction.add('ResourceCartoonEdit')
 
       await Fetch.json('/api/app/cartoon/find', { cartoon_id: item._id })
         .then(res => {
@@ -88,15 +88,15 @@ function App() {
           setList(i => i.filter(n => n._id !== item._id))
         })
 
-      contextApp.loadingArrayAction.remove('cartoonInformationEdit')
+      contextApp.loadingArrayAction.remove('ResourceCartoonEdit')
     }
 
-    contextApp.dialogsArrayAction.add('cartoonInformationOperation', { _id: item._id, onRefresh: async () => await onRefresh(item) })
+    contextApp.dialogsArrayAction.add('ResourceCartoonOperation', { _id: item._id, onRefresh: async () => await onRefresh(item) })
   }
 
   const onDelete = (item) => {
     const onConfirm = async () => {
-      contextApp.loadingArrayAction.add('cartoonInformationDelete')
+      contextApp.loadingArrayAction.add('ResourceCartoonDelete')
 
       await Fetch.json('/api/app/admin/cartoon/delete', { cartoon_id: item._id })
         .then(res => {
@@ -106,7 +106,7 @@ function App() {
           contextApp.messageArrayAction.add(res.message || '系统异常')
         })
 
-      contextApp.loadingArrayAction.remove('cartoonInformationDelete')
+      contextApp.loadingArrayAction.remove('ResourceCartoonDelete')
 
       onFetch()
     }

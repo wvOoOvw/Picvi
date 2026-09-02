@@ -11,7 +11,7 @@ const ResourceVideoOperation = React.lazy(() => import('./App.Dialogs.ResourceVi
 
 const UserLogin = React.lazy(() => import('./App.Dialogs.UserLogin'))
 const UserRegister = React.lazy(() => import('./App.Dialogs.UserRegister'))
-const UserInformationOperation = React.lazy(() => import('./App.Dialogs.UserInformationOperation'))
+const UserOperation = React.lazy(() => import('./App.Dialogs.UserOperation'))
 
 const Contact = React.lazy(() => import('./App.Dialogs.Contact'))
 

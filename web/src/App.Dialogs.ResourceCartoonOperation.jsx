@@ -82,6 +82,21 @@ function App() {
     contextApp.loadingArrayAction.remove('ResourceCartoonOperation')
   }
 
+  const onUploadFolder = () => {
+    contextApp.dialogsArrayAction.add('FolderParse', {
+      _id: cartoon._id,
+      type: 'cartoon',
+      onComplete: ({ name, description, subscribeview }) => {
+        setCartoon(prev => ({
+          ...prev,
+          name: prev.name || name,
+          description: description,
+          ...(subscribeview ? { subscribeview: [...prev.subscribeview, ...subscribeview] } : {})
+        }))
+      }
+    })
+  }
+
   React.useEffect(() => {
     if (contextApp.dialogsArrayAction.exist('ResourceCartoonOperation')) {
       setStep(0)
@@ -146,6 +161,7 @@ function App() {
         }
       </DialogContent>
       <DialogActions>
+        <Button onClick={onUploadFolder} disabled={cartoonLoading}>上传文件夹</Button>
         <Button onClick={() => setStep(i => i - 1)} disabled={step === 0 || cartoonLoading}>上一步</Button>
         <Button onClick={() => setStep(i => i + 1)} disabled={step === 7 || cartoonLoading}>下一步</Button>
         <Button onClick={onUpdate} disabled={cartoonLoading}>确认</Button>

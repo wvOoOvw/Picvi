@@ -6,7 +6,6 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Typography from '@mui/material/Typography'
-import CircularProgress from '@mui/material/CircularProgress'
 import LinearProgress from '@mui/material/LinearProgress'
 
 import FolderIcon from '@mui/icons-material/Folder'
@@ -14,24 +13,22 @@ import UploadFileIcon from '@mui/icons-material/UploadFile'
 
 import md5 from 'md5'
 
-import { Context as ContextApp } from '../App'
+import { Context as ContextApp } from './App'
 
-import { Fetch } from '../utils.fetch'
-import { encryptBlob } from '../../../common/crypto-web.js'
+import { Fetch } from './utils.fetch'
+import { encryptBlob } from '../../common/crypto-web.js'
 
 function App() {
   const contextApp = React.useContext(ContextApp)
 
-  const [folderName, setFolderName] = React.useState('')
-  const [imageCount, setImageCount] = React.useState(0)
-  const [videoCount, setVideoCount] = React.useState(0)
   const [uploading, setUploading] = React.useState(false)
   const [progress, setProgress] = React.useState(0)
-  const [uploadedLinks, setUploadedLinks] = React.useState([])
+  const [dragOver, setDragOver] = React.useState(false)
 
   const inputRef = React.useRef(null)
 
   const _id = contextApp.dialogsArrayAction.props('FolderParse')?._id
+  const type = contextApp.dialogsArrayAction.props('FolderParse')?.type
   const onComplete = contextApp.dialogsArrayAction.props('FolderParse')?.onComplete
 
   const reset = () => {
@@ -40,28 +37,36 @@ function App() {
     setVideoCount(0)
     setUploading(false)
     setProgress(0)
-    setUploadedLinks([])
   }
 
-  const onFolderChange = async (e) => {
-    const files = Array.from(e.target.files)
+  const readEntry = async (entry, path = '') => {
+    if (entry.isFile) {
+      return new Promise(resolve => entry.file(file => {
+        Object.defineProperty(file, 'webkitRelativePath', { value: path + file.name, configurable: true, writable: true })
+        resolve([file])
+      }, () => resolve([])))
+    }
 
+    const reader = entry.createReader()
+    const entries = []
+
+    while (batch.length > 0) {
+      const batch = await new Promise(resolve => reader.readEntries(resolve, () => resolve([])))
+      entries.push(...batch)
+    }
+
+    const files = await Promise.all(entries.map(child => readEntry(child, `${path}${entry.name}/`)))
+    return files.flat()
+  }
+
+  const processFiles = async (files, fallbackName) => {
     if (files.length === 0) return
 
-    // 解析文件夹名称（取第一个文件的相对路径的第一段）
-    const relativePath = files[0].webkitRelativePath || files[0].name
-    const parts = relativePath.split('/')
-    const dirName = parts.length > 1 ? parts[0] : '未命名'
-
-    // 筛选图片和视频
     const imageFiles = files.filter(f => f.type.startsWith('image/'))
     const videoFiles = files.filter(f => f.type.startsWith('video/'))
     const mediaFiles = [...imageFiles, ...videoFiles]
 
-    setFolderName(dirName)
-    setImageCount(imageFiles.length)
-    setVideoCount(videoFiles.length)
-    setUploadedLinks([])
+    const name = files[0].webkitRelativePath?.split('/')[0] || fallbackName || files[0].name
 
     if (mediaFiles.length === 0) {
       contextApp.messageArrayAction.add('文件夹内未找到图片或视频')
@@ -69,50 +74,70 @@ function App() {
     }
 
     const description = `包含内容：${imageFiles.length}P + ${videoFiles.length}V`
+    const subscribeview = []
 
-    // 没有图集_id时，只解析名称和描述，不上传
-    if (!_id) {
-      if (onComplete) {
-        onComplete({ name: dirName, description })
+    if (_id) {
+      setUploading(true)
+      setProgress(0)
+
+      for (let i = 0; i < mediaFiles.length; i++) {
+        const file = mediaFiles[i]
+        try {
+          const encryptedBlob = await encryptBlob(file)
+          const ext = file.type.split('/')[1]
+
+          const formData = new FormData()
+          formData.append('file', encryptedBlob, `${md5(file.name)}.${ext}.enc`)
+          formData.append('dir', `/${type}/${_id}/${md5(file.name)}.${ext}.enc`)
+
+          const res = await Fetch.form('/api/app/upload', formData)
+          const link = 'kapi://remote.oss' + res.data
+          subscribeview.push(link)
+          setProgress(Math.round(((i + 1) / mediaFiles.length) * 100))
+        } catch {
+          console.log(`上传失败: ${file.name}`)
+          contextApp.messageArrayAction.add(`上传失败: ${file.name}`)
+        }
       }
-      contextApp.messageArrayAction.add('解析完成')
-      contextApp.dialogsArrayAction.remove('FolderParse')
+
+      setUploading(false)
+    }
+
+    if (onComplete) {
+      onComplete({ name, description, subscribeview })
+    }
+
+    contextApp.messageArrayAction.add('上传成功')
+    contextApp.dialogsArrayAction.remove('FolderParse')
+  }
+
+  const onFolderChange = async (e) => {
+    const files = Array.from(e.target.files)
+    e.target.value = ''
+    await processFiles(files)
+  }
+
+  const onDrop = async (e) => {
+    e.preventDefault()
+    setDragOver(false)
+
+    const items = Array.from(e.dataTransfer.items || [])
+    const entries = items.map(item => item.webkitGetAsEntry?.()).filter(Boolean)
+    const directoryEntries = entries.filter(entry => entry.isDirectory)
+
+    if (directoryEntries.length > 0) {
+      const filesArray = await Promise.all(directoryEntries.map(entry => readEntry(entry)))
+      await processFiles(filesArray.flat())
       return
     }
 
-    // 有图集_id时，上传文件
-    setUploading(true)
-    setProgress(0)
-
-    const links = []
-    for (let i = 0; i < mediaFiles.length; i++) {
-      const file = mediaFiles[i]
-      try {
-        const encryptedBlob = await encryptBlob(file)
-        const ext = file.type.split('/')[1]
-
-        const formData = new FormData()
-        formData.append('file', encryptedBlob, `${md5(file.name)}.${ext}.enc`)
-        formData.append('dir', `/album/${_id}/${md5(file.name)}.${ext}.enc`)
-
-        const res = await Fetch.form('/api/app/upload', formData)
-        const link = 'kapi://remote.oss' + res.data
-        links.push(link)
-        setUploadedLinks([...links])
-        setProgress(Math.round(((i + 1) / mediaFiles.length) * 100))
-      } catch (err) {
-        contextApp.messageArrayAction.add(`上传失败: ${file.name}`)
-      }
+    if (entries.length > 0) {
+      const filesArray = await Promise.all(entries.map(entry => readEntry(entry)))
+      await processFiles(filesArray.flat())
+      return
     }
 
-    setUploading(false)
-
-    if (onComplete) {
-      onComplete({ name: dirName, description, subscribeview: links })
-    }
-
-    contextApp.messageArrayAction.add(`上传完成: ${links.length}个文件`)
-    contextApp.dialogsArrayAction.remove('FolderParse')
+    await processFiles(Array.from(e.dataTransfer.files))
   }
 
   React.useEffect(() => {
@@ -129,17 +154,29 @@ function App() {
           上传文件夹
         </Typography>
       </DialogTitle>
-      <DialogContent style={{ paddingTop: 12 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <input
-            ref={inputRef}
-            type='file'
-            webkitdirectory=''
-            directory=''
-            multiple
-            style={{ display: 'none' }}
-            onChange={onFolderChange}
-          />
+      <DialogContent
+        onDragOver={e => { e.preventDefault(); if (!uploading) setDragOver(true) }}
+        onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false) }}
+        onDrop={e => { if (!uploading) onDrop(e) }}
+        style={{
+          paddingTop: 12,
+          minHeight: 200,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          outline: dragOver ? '2px dashed rgba(218, 122, 133, 1)' : 'none',
+          outlineOffset: -8,
+          borderRadius: 8
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 16
+          }}
+        >
+          <input ref={inputRef} type='file' webkitdirectory='' directory='' multiple style={{ display: 'none' }} onChange={onFolderChange}/>
 
           <Button
             variant='outlined'
@@ -151,26 +188,17 @@ function App() {
             选择文件夹
           </Button>
 
-          {folderName ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <Typography variant='body2' style={{ fontSize: 14 }}>
-                文件夹名称：<b>{folderName}</b>
-              </Typography>
-              <Typography variant='body2' style={{ fontSize: 14 }}>
-                包含内容：<b>{imageCount}P + {videoCount}V</b>（{imageCount + videoCount}个文件）
-              </Typography>
-            </div>
-          ) : null}
+          <Typography variant='body2' color='textSecondary' style={{ fontSize: 12, textAlign: 'center' }}>
+            也可以直接拖入文件夹到此处
+          </Typography>
 
-          {uploading ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-              <CircularProgress color='primary' size={32} />
-              <Typography variant='body2' style={{ fontSize: 14 }}>
-                上传中... {progress}%（{uploadedLinks.length}/{imageCount + videoCount}）
-              </Typography>
-              <LinearProgress variant='determinate' value={progress} style={{ width: '100%' }} />
-            </div>
-          ) : null}
+          {
+            uploading ?
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
+                <LinearProgress variant='determinate' value={progress} style={{ width: '100%' }} />
+              </div>
+              : null
+          }
         </div>
       </DialogContent>
       <DialogActions>

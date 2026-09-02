@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Button from '@mui/material/Button'
-import FolderIcon from '@mui/icons-material/Folder'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
@@ -161,8 +160,7 @@ function App() {
         }
       </DialogContent>
       <DialogActions>
-        <Button startIcon={<FolderIcon />} onClick={onUploadFolder} disabled={albumLoading}>上传文件夹</Button>
-        <div style={{ flex: 1 }} />
+        <Button onClick={onUploadFolder} disabled={albumLoading}>上传文件夹</Button>
         <Button onClick={() => setStep(i => i - 1)} disabled={step === 0 || albumLoading}>上一步</Button>
         <Button onClick={() => setStep(i => i + 1)} disabled={step === 7 || albumLoading}>下一步</Button>
         <Button onClick={onUpdate} disabled={albumLoading}>确认</Button>

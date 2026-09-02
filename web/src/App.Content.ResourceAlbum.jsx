@@ -78,7 +78,7 @@ function App() {
 
   const onEdit = (item) => {
     const onRefresh = async (item) => {
-      contextApp.loadingArrayAction.add('albumInformationEdit')
+      contextApp.loadingArrayAction.add('ResourceAlbumEdit')
 
       await Fetch.json('/api/app/album/find', { album_id: item._id })
         .then(res => {
@@ -88,15 +88,15 @@ function App() {
           setList(i => i.filter(n => n._id !== item._id))
         })
 
-      contextApp.loadingArrayAction.remove('albumInformationEdit')
+      contextApp.loadingArrayAction.remove('ResourceAlbumEdit')
     }
 
-    contextApp.dialogsArrayAction.add('albumInformationOperation', { _id: item._id, onRefresh: async () => await onRefresh(item) })
+    contextApp.dialogsArrayAction.add('ResourceAlbumOperation', { _id: item._id, onRefresh: async () => await onRefresh(item) })
   }
 
   const onDelete = (item) => {
     const onConfirm = async () => {
-      contextApp.loadingArrayAction.add('albumInformationDelete')
+      contextApp.loadingArrayAction.add('ResourceAlbumDelete')
 
       await Fetch.json('/api/app/admin/album/delete', { album_id: item._id })
         .then(res => {
@@ -106,7 +106,7 @@ function App() {
           contextApp.messageArrayAction.add(res.message || '系统异常')
         })
 
-      contextApp.loadingArrayAction.remove('albumInformationDelete')
+      contextApp.loadingArrayAction.remove('ResourceAlbumDelete')
 
       onFetch()
     }

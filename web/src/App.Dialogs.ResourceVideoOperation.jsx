@@ -82,6 +82,21 @@ function App() {
     contextApp.loadingArrayAction.remove('ResourceVideoOperation')
   }
 
+  const onUploadFolder = () => {
+    contextApp.dialogsArrayAction.add('FolderParse', {
+      _id: video._id,
+      type: 'video',
+      onComplete: ({ name, description, subscribeview }) => {
+        setVideo(prev => ({
+          ...prev,
+          name: prev.name || name,
+          description: description,
+          ...(subscribeview ? { subscribeview: [...prev.subscribeview, ...subscribeview] } : {})
+        }))
+      }
+    })
+  }
+
   React.useEffect(() => {
     if (contextApp.dialogsArrayAction.exist('ResourceVideoOperation')) {
       setStep(0)
@@ -146,6 +161,7 @@ function App() {
         }
       </DialogContent>
       <DialogActions>
+        <Button onClick={onUploadFolder} disabled={videoLoading}>上传文件夹</Button>
         <Button onClick={() => setStep(i => i - 1)} disabled={step === 0 || videoLoading}>上一步</Button>
         <Button onClick={() => setStep(i => i + 1)} disabled={step === 7 || videoLoading}>下一步</Button>
         <Button onClick={onUpdate} disabled={videoLoading}>确认</Button>

@@ -11,9 +11,9 @@ import Card from '@mui/material/Card'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import ChecklistIcon from '@mui/icons-material/Checklist'
 
-import Media from '../App.ComponentPure.Media'
+import Media from './App.ComponentPure.Media'
 
-import { Context as ContextApp } from '../App'
+import { Context as ContextApp } from './App'
 
 function App() {
   const contextApp = React.useContext(ContextApp)
