@@ -32,7 +32,6 @@ function ResourceViewPane(props) {
 
   const resource = props.resource
   const title = props.title
-  const mediaControls = props.mediaControls
   const item = props.item
   const favorited = props.favorited
   const recent = props.recent
@@ -145,7 +144,7 @@ function ResourceViewPane(props) {
               viewImageLink.length > 0 ?
                 <>
                   <Media
-                    controls={mediaControls}
+                    controls
                     cardActionArea
                     src={viewImageLink[viewImageLinkIndex]}
                     loadingSize={32}
@@ -164,7 +163,7 @@ function ResourceViewPane(props) {
               viewImageLink.length === 0 ?
                 <>
                   <Media
-                    controls={mediaControls}
+                    controls
                     cardActionArea
                     src={emptyImageMemo}
                     loadingSize={32}
@@ -261,7 +260,6 @@ function ResourceViewPane(props) {
 function ResourceView(props) {
   const resource = props.resource
   const title = props.title
-  const mediaControls = props.mediaControls
 
   const params = ReactRouterDom.useParams()
 
@@ -339,7 +337,7 @@ function ResourceView(props) {
                   {
                     item.status === 1 ?
                       <>
-                        <ResourceViewPane resource={resource} title={title} mediaControls={mediaControls} item={item} favorited={favorited} recent={recent} onRefresh={onFetchRefresh} />
+                        <ResourceViewPane resource={resource} title={title} item={item} favorited={favorited} recent={recent} onRefresh={onFetchRefresh} />
                       </>
                       : null
                   }
