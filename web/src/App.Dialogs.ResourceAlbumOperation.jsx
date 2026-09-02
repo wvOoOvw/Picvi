@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Button from '@mui/material/Button'
+import FolderIcon from '@mui/icons-material/Folder'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
@@ -82,6 +83,20 @@ function App() {
     contextApp.loadingArrayAction.remove('ResourceAlbumOperation')
   }
 
+  const onUploadFolder = () => {
+    contextApp.dialogsArrayAction.add('FolderParse', {
+      _id: album._id,
+      onComplete: ({ name, description, subscribeview }) => {
+        setAlbum(prev => ({
+          ...prev,
+          name: prev.name || name,
+          description: description,
+          ...(subscribeview ? { subscribeview: [...prev.subscribeview, ...subscribeview] } : {})
+        }))
+      }
+    })
+  }
+
   React.useEffect(() => {
     if (contextApp.dialogsArrayAction.exist('ResourceAlbumOperation')) {
       setStep(0)
@@ -146,6 +161,8 @@ function App() {
         }
       </DialogContent>
       <DialogActions>
+        <Button startIcon={<FolderIcon />} onClick={onUploadFolder} disabled={albumLoading}>上传文件夹</Button>
+        <div style={{ flex: 1 }} />
         <Button onClick={() => setStep(i => i - 1)} disabled={step === 0 || albumLoading}>上一步</Button>
         <Button onClick={() => setStep(i => i + 1)} disabled={step === 7 || albumLoading}>下一步</Button>
         <Button onClick={onUpdate} disabled={albumLoading}>确认</Button>

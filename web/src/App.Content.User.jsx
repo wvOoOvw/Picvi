@@ -407,7 +407,7 @@ function User(props) {
   }
 
   const onEdit = () => {
-    contextApp.dialogsArrayAction.add('UserInformationOperation', { onRefresh: onRefresh })
+    contextApp.dialogsArrayAction.add('UserOperation', { onRefresh: onRefresh })
   }
 
   const onSystem = () => {

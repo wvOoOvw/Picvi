@@ -27,7 +27,7 @@ function App() {
         setUser({ password: res.data.password })
       })
       .catch(res => {
-        contextApp.dialogsArrayAction.remove('UserInformationOperation')
+        contextApp.dialogsArrayAction.remove('UserOperation')
         contextApp.messageArrayAction.add('查询错误')
       })
 
@@ -35,7 +35,7 @@ function App() {
   }
 
   const onEnsure = async () => {
-    contextApp.loadingArrayAction.add('UserInformationOperation')
+    contextApp.loadingArrayAction.add('UserOperation')
 
     await Fetch.json('/api/app/user/update', { ...user })
       .then(res => {
@@ -43,29 +43,29 @@ function App() {
         Fetch.connect(res.data.authorization)
         contextApp.setUser(res.data)
         contextApp.messageArrayAction.add('编辑成功')
-        contextApp.dialogsArrayAction.remove('UserInformationOperation')
+        contextApp.dialogsArrayAction.remove('UserOperation')
       })
       .catch(res => {
         contextApp.messageArrayAction.add(res.message || '异常错误')
       })
 
-    if (contextApp.dialogsArrayAction.props('UserInformationOperation') && contextApp.dialogsArrayAction.props('UserInformationOperation').onRefresh) {
-      await contextApp.dialogsArrayAction.props('UserInformationOperation').onRefresh()
+    if (contextApp.dialogsArrayAction.props('UserOperation') && contextApp.dialogsArrayAction.props('UserOperation').onRefresh) {
+      await contextApp.dialogsArrayAction.props('UserOperation').onRefresh()
     }
 
-    contextApp.loadingArrayAction.remove('UserInformationOperation')
+    contextApp.loadingArrayAction.remove('UserOperation')
   }
 
   React.useEffect(() => {
-    if (contextApp.dialogsArrayAction.exist('UserInformationOperation')) {
+    if (contextApp.dialogsArrayAction.exist('UserOperation')) {
       setUser()
       setUserLoading(false)
       onFetchUser()
     }
-  }, [contextApp.dialogsArrayAction.exist('UserInformationOperation')])
+  }, [contextApp.dialogsArrayAction.exist('UserOperation')])
 
   const Component =
-    <Dialog open={contextApp.dialogsArrayAction.exist('UserInformationOperation')} onClose={() => contextApp.dialogsArrayAction.remove('UserInformationOperation')} sx={{ '& .MuiDialog-paper': { width: 600, maxWidth: 'unset' } }}>
+    <Dialog open={contextApp.dialogsArrayAction.exist('UserOperation')} onClose={() => contextApp.dialogsArrayAction.remove('UserOperation')} sx={{ '& .MuiDialog-paper': { width: 600, maxWidth: 'unset' } }}>
       <DialogTitle>
         <Typography color='primary' style={{ fontSize: 20 }}>
           修改密码
@@ -88,7 +88,7 @@ function App() {
         }
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => contextApp.dialogsArrayAction.remove('UserInformationOperation')}>取消</Button>
+        <Button onClick={() => contextApp.dialogsArrayAction.remove('UserOperation')}>取消</Button>
         <Button onClick={onEnsure}>确认修改</Button>
       </DialogActions>
     </Dialog>

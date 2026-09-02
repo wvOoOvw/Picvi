@@ -22,7 +22,8 @@ const TextFilter = React.lazy(() => import('./App.Dialogs.Global.TextFilter'))
 const System = React.lazy(() => import('./App.Dialogs.System'))
 const Subscribe = React.lazy(() => import('./App.Dialogs.Subscribe'))
 
-const SubscribeviewSelector = React.lazy(() => import('./App.Dialogs.SubscribeviewSelector'))
+const SubscribeviewSelector = React.lazy(() => import('./App.Dialogs.Resource.SubscribeviewSelector'))
+const ResourceFolderSelector = React.lazy(() => import('./App.Dialogs.Resource.FolderSelector'))
 
 function App() {
   const pathname = ReactRouterDom.useLocation().pathname
@@ -41,7 +42,7 @@ function App() {
 
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('UserLogin')}><UserLogin /></Suspense>
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('UserRegister')}><UserRegister /></Suspense>
-      <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('UserInformationOperation')}><UserInformationOperation /></Suspense>
+      <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('UserOperation')}><UserOperation /></Suspense>
 
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('Contact')}><Contact /></Suspense>
 
@@ -53,6 +54,7 @@ function App() {
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('Subscribe')}><Subscribe /></Suspense>
 
       <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('SubscribeviewSelector')}><SubscribeviewSelector /></Suspense>
+      <Suspense name='Dialogs' open={contextApp.dialogsArrayAction.exist('FolderParse')}><ResourceFolderSelector /></Suspense>
     </>
 
   return Component
