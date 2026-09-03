@@ -32,9 +32,6 @@ function App() {
   const onComplete = contextApp.dialogsArrayAction.props('FolderParse')?.onComplete
 
   const reset = () => {
-    setFolderName('')
-    setImageCount(0)
-    setVideoCount(0)
     setUploading(false)
     setProgress(0)
   }
@@ -50,8 +47,9 @@ function App() {
     const reader = entry.createReader()
     const entries = []
 
-    while (batch.length > 0) {
+    while (true) {
       const batch = await new Promise(resolve => reader.readEntries(resolve, () => resolve([])))
+      if (batch.length === 0) break
       entries.push(...batch)
     }
 
@@ -154,52 +152,50 @@ function App() {
           上传文件夹
         </Typography>
       </DialogTitle>
-      <DialogContent
-        onDragOver={e => { e.preventDefault(); if (!uploading) setDragOver(true) }}
-        onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false) }}
-        onDrop={e => { if (!uploading) onDrop(e) }}
-        style={{
-          paddingTop: 12,
-          minHeight: 200,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          outline: dragOver ? '2px dashed rgba(218, 122, 133, 1)' : 'none',
-          outlineOffset: -8,
-          borderRadius: 8
-        }}
-      >
+      <DialogContent style={{ paddingTop: 12, display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <input ref={inputRef} type='file' webkitdirectory='' directory='' multiple style={{ display: 'none' }} onChange={onFolderChange} />
+
+        <Button
+          fullWidth
+          variant='outlined'
+          startIcon={<UploadFileIcon />}
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+        >
+          选择文件夹
+        </Button>
+
         <div
+          onDragOver={e => { e.preventDefault(); if (!uploading) setDragOver(true) }}
+          onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false) }}
+          onDrop={e => { if (!uploading) onDrop(e) }}
           style={{
+            minHeight: 160,
             display: 'flex',
             flexDirection: 'column',
-            gap: 16
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 8,
+            padding: 16,
+            border: `2px dashed ${dragOver ? 'rgba(218, 122, 133, 1)' : 'rgba(0, 0, 0, 0.25)'}`,
+            borderRadius: 8,
+            background: dragOver ? 'rgba(218, 122, 133, 0.06)' : 'transparent',
+            transition: 'border-color 0.2s, background 0.2s'
           }}
         >
-          <input ref={inputRef} type='file' webkitdirectory='' directory='' multiple style={{ display: 'none' }} onChange={onFolderChange}/>
-
-          <Button
-            variant='outlined'
-            startIcon={<UploadFileIcon />}
-            onClick={() => inputRef.current?.click()}
-            disabled={uploading}
-            fullWidth
-          >
-            选择文件夹
-          </Button>
-
+          <FolderIcon color={dragOver ? 'primary' : 'disabled'} style={{ fontSize: 40 }} />
           <Typography variant='body2' color='textSecondary' style={{ fontSize: 12, textAlign: 'center' }}>
-            也可以直接拖入文件夹到此处
+            {dragOver ? '松开以上传文件夹' : '拖入文件夹到此处'}
           </Typography>
-
-          {
-            uploading ?
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-                <LinearProgress variant='determinate' value={progress} style={{ width: '100%' }} />
-              </div>
-              : null
-          }
         </div>
+
+        {
+          uploading ?
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
+              <LinearProgress variant='determinate' value={progress} style={{ width: '100%' }} />
+            </div>
+            : null
+        }
       </DialogContent>
       <DialogActions>
         <Button onClick={() => contextApp.dialogsArrayAction.remove('FolderParse')} disabled={uploading}>取消</Button>
