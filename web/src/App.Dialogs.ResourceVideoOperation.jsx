@@ -69,6 +69,9 @@ function App() {
         .then(res => {
           contextApp.dialogsArrayAction.remove('ResourceVideoOperation')
           contextApp.messageArrayAction.add('创建成功')
+          setTimeout(() => {
+            contextApp.dialogsArrayAction.add('ResourceVideoOperation', { _id: res.data.insertedId })
+          }, 500)
         })
         .catch(res => {
           contextApp.messageArrayAction.add(res.message || '系统异常')
@@ -87,11 +90,9 @@ function App() {
       _id: video._id,
       type: 'video',
       onComplete: ({ name, description, subscribeview }) => {
-        setVideo(prev => ({
-          ...prev,
-          name: prev.name || name,
-          description: description,
-          ...(subscribeview ? { subscribeview: [...prev.subscribeview, ...subscribeview] } : {})
+        setVideo(i => ({
+          ...i,
+          ...props
         }))
       }
     })

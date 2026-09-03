@@ -69,6 +69,9 @@ function App() {
         .then(res => {
           contextApp.dialogsArrayAction.remove('ResourceAlbumOperation')
           contextApp.messageArrayAction.add('创建成功')
+          setTimeout(() => {
+            contextApp.dialogsArrayAction.add('ResourceAlbumOperation', { _id: res.data.insertedId })
+          }, 500)
         })
         .catch(res => {
           contextApp.messageArrayAction.add(res.message || '系统异常')
@@ -85,12 +88,11 @@ function App() {
   const onUploadFolder = () => {
     contextApp.dialogsArrayAction.add('FolderParse', {
       _id: album._id,
-      onComplete: ({ name, description, subscribeview }) => {
-        setAlbum(prev => ({
-          ...prev,
-          name: prev.name || name,
-          description: description,
-          ...(subscribeview ? { subscribeview: [...prev.subscribeview, ...subscribeview] } : {})
+      type: 'album',
+      onComplete: (props) => {
+        setAlbum(i => ({
+          ...i,
+          ...props
         }))
       }
     })
