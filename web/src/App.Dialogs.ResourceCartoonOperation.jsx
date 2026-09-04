@@ -89,7 +89,7 @@ function App() {
     contextApp.dialogsArrayAction.add('FolderParse', {
       _id: cartoon._id,
       type: 'cartoon',
-      onComplete: ({ name, description, subscribeview }) => {
+      onComplete: (props) => {
         setCartoon(i => ({
           ...i,
           ...props

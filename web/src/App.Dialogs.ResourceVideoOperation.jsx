@@ -89,7 +89,7 @@ function App() {
     contextApp.dialogsArrayAction.add('FolderParse', {
       _id: video._id,
       type: 'video',
-      onComplete: ({ name, description, subscribeview }) => {
+      onComplete: (props) => {
         setVideo(i => ({
           ...i,
           ...props
