@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
-const { decryptBuffer } = require('../../../common/crypto-node.js')
+const CryptoJS = require('crypto-js')
+const { decryptBuffer } = require('../../../common/crypto-node.js').createCrypto(CryptoJS)
 
 const origin_path = path.resolve(__dirname, './src')
 const target_path = path.resolve(__dirname, './build')

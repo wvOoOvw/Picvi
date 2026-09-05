@@ -17,7 +17,10 @@ import Media from './App.ComponentPure.Media'
 import { Context as ContextApp } from './App'
 
 import { Fetch } from './utils.fetch'
-import { encryptBlob } from '../../common/crypto-web.js'
+import CryptoJS from 'crypto-js'
+import { createCrypto } from '../../common/crypto-web.js'
+
+const { encryptBlob } = createCrypto(CryptoJS)
 
 function App(props) {
   const _id = props._id

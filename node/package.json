@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "compression": "^1.7.4",
+    "crypto-js": "^4.2.0",
     "express": "^4.17.1",
     "form-data": "^4.0.4",
     "formidable": "^3.5.4",

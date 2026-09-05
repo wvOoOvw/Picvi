@@ -16,7 +16,10 @@ import md5 from 'md5'
 import { Context as ContextApp } from './App'
 
 import { Fetch } from './utils.fetch'
-import { encryptBlob } from '../../common/crypto-web.js'
+import CryptoJS from 'crypto-js'
+import { createCrypto } from '../../common/crypto-web.js'
+
+const { encryptBlob } = createCrypto(CryptoJS)
 
 function App() {
   const contextApp = React.useContext(ContextApp)

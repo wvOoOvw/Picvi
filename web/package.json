@@ -12,6 +12,7 @@
     "@mui/material": "^7.1.2",
     "@mui/x-date-pickers": "^8.5.0",
     "@zip.js/zip.js": "^2.8.5",
+    "crypto-js": "^4.2.0",
     "dayjs": "^1.11.13",
     "html2canvas": "^1.4.1",
     "jsqr": "^1.4.0",

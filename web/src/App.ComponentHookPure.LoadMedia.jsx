@@ -1,7 +1,10 @@
 import React from 'react'
 
 import { Fetch } from './utils.fetch'
-import { decryptArrayBuffer, getEncUrlMime } from '../../common/crypto-web.js'
+import CryptoJS from 'crypto-js'
+import { createCrypto } from '../../common/crypto-web.js'
+
+const { decryptArrayBuffer, getEncUrlMime } = createCrypto(CryptoJS)
 
 const VIDEO_EXTENSIONS = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv', 'flv', 'wmv', 'm4v']
 const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp']

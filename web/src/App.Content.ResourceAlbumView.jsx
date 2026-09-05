@@ -22,7 +22,10 @@ import { Context as ContextApp } from './App'
 
 import { Fetch, urlDecode } from './utils.fetch'
 import { copy } from './utils.copy'
-import { decryptArrayBuffer, getEncUrlMime } from '../../common/crypto-web.js'
+import CryptoJS from 'crypto-js'
+import { createCrypto } from '../../common/crypto-web.js'
+
+const { decryptArrayBuffer, getEncUrlMime } = createCrypto(CryptoJS)
 import { emptyImage } from './utils.emptyImage'
 
 import AvatarEmpty from '../static/image/AvatarEmpty.jpg'
