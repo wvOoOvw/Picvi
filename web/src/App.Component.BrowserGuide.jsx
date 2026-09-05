@@ -33,7 +33,7 @@ export default function BrowserGuide() {
         </Typography>
         
         <Typography
-          variant="h6"
+          variant="body2"
           sx={{
             marginBottom: 3,
             fontSize: { xs: '1rem', sm: '1.25rem' },

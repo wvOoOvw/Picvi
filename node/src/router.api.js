@@ -1198,10 +1198,7 @@ router.post('/api/app/upload', async (req, res) => {
     fs.mkdirSync(parentDir, { recursive: true })
     fs.renameSync(file.filepath, targetPath)
 
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
     res.send({ code: 200, data: dirComplete })
-
   } catch (e) {
     if (process.argv.includes('--dev')) { console.log(e?.error || e) }; res.status(e?.data?.status || 500).send({ code: e?.data?.code || 500, message: e?.data?.message || '异常错误' })
   }

@@ -50,7 +50,7 @@ function App() {
   const Component =
     <Dialog open={contextApp.dialogsArrayAction.exist('SubscribeviewSelector')} onClose={() => contextApp.dialogsArrayAction.remove('SubscribeviewSelector')} maxWidth="md">
       <DialogTitle>
-        <Typography variant="h6" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <Typography variant="body2" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <ChecklistIcon />
           从订阅内容中添加到{targetFieldName === 'poster' ? '封面' : '预览'}
         </Typography>

@@ -82,7 +82,7 @@ function CardCurrentSubscription() {
           }
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <Typography variant='h6' style={{ fontSize: 24, fontWeight: 'bolder' }}>{subscriptionPlan.name}</Typography>
+          <Typography variant='body2' style={{ fontSize: 24, fontWeight: 'bolder' }}>{subscriptionPlan.name}</Typography>
           <Typography variant='body2' style={{ fontSize: 12 }}>{subscriptionPlan.description}</Typography>
         </div>
       </div>
