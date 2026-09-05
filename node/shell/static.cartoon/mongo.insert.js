@@ -45,7 +45,7 @@ const _run = async () => {
   for (const dir of dirs) {
     const files = fs.readdirSync(path.resolve(target_path, dir)).filter(i => !i.includes('.DS_Store'))
 
-    let name = JSON.parse(fs.readFileSync(path.resolve(target_path, dir, '_.json'), 'utf-8').replace(/^\uFEFF/, '')).name
+    let name = dir
     let description = ''
 
     {
@@ -128,13 +128,6 @@ const _run = async () => {
     }).catch(e => console.log(e))
 
     console.log('subscribeview', _id, subscribeview.length)
-
-    {
-      const jsonPath = path.resolve(__dirname, './src', name, '_.json')
-      const meta = JSON.parse(fs.readFileSync(jsonPath, 'utf-8').replace(/^﻿/, ''))
-      meta._id = _id
-      fs.writeFileSync(jsonPath, JSON.stringify(meta, null, 2))
-    }
   }
 }
 

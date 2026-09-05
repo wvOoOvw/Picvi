@@ -9,7 +9,6 @@ const config = Object.assign({}, common, {
   mode: 'development',
   devtool: 'inline-source-map',
   plugins: [
-    new webpack.DefinePlugin({ process: { env: JSON.stringify('dev') } }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './webpack.dev.html'),
       filename: 'index.html',

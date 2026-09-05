@@ -6,7 +6,14 @@ var ipOss = 'http://124.156.103.235'
 // ipApi = 'http://localhost'
 // ipOss = 'http://localhost'
 
-if (process.env.NODE_ENV === 'prod') {
+console.log(process.env.NODE_ENV)
+
+if (process.env.NODE_ENV === 'development') {
+  ipApi = 'http://localhost'
+  ipOss = 'http://localhost'
+}
+
+if (process.env.NODE_ENV === 'production') {
   ipApi = window.location.origin
   ipOss = window.location.origin
 }

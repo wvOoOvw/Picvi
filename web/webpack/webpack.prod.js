@@ -8,7 +8,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const config = Object.assign({}, common, {
   mode: 'production',
   plugins: [
-    new webpack.DefinePlugin({ process: { env: JSON.stringify('prod') } }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './webpack.prod.html'),
       filename: 'index.html',
