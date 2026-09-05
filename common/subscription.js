@@ -22,7 +22,7 @@ export const subscription = [
     "description": "可查看图集的全部内容",
     "accessExpireTime": "1年",
     "accessExpireTimeDayJS": ["1", "year"],
-    "price": "¥68",
+    "price": "¥98",
     "value": "user:ablum"
   },
   {
@@ -30,7 +30,7 @@ export const subscription = [
     "description": "可查看图集、动漫、视频的全部内容",
     "accessExpireTime": "永久有效",
     "accessExpireTimeDayJS": ["1000", "year"],
-    "price": "¥128",
+    "price": "¥158",
     "value": "user:ablum.cartoon.video"
   }
 ]

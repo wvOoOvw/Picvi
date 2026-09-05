@@ -102,7 +102,7 @@ function App() {
     }
 
     if (onComplete) {
-      onComplete(props)
+      onComplete({ name, description, subscribeview })
     }
 
     contextApp.messageArrayAction.add('上传成功')
