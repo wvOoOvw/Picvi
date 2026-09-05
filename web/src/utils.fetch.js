@@ -3,10 +3,10 @@ var ipOss = 'http://115.190.230.137'
 var ipOnnx = 'http://115.190.230.137'
 var ipWasm = 'http://115.190.230.137'
 
-ipApi = window.location.origin.replace(':8000', '')
-ipOss = window.location.origin.replace(':8000', '')
-// ipApi = 'http://localhost'
-// ipOss = 'http://localhost'
+// ipApi = window.location.origin
+// ipOss = window.location.origin
+ipApi = 'http://localhost'
+ipOss = 'http://localhost'
 // ipOss = 'http://localhost:8001'
 // ipOnnx = 'http://localhost:8001'
 // ipWasm = 'http://localhost:8001'

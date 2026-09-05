@@ -67,11 +67,8 @@ function App() {
     if (contextApp.dialogsArrayAction.props('ResourceAlbumOperation') === undefined) {
       await Fetch.json('/api/app/admin/album/insert', { ...album })
         .then(res => {
-          contextApp.dialogsArrayAction.remove('ResourceAlbumOperation')
+          contextApp.dialogsArrayAction.remove('ResourceAlbumOperation').add('ResourceAlbumOperation', { _id: res.data.insertedId })
           contextApp.messageArrayAction.add('创建成功')
-          setTimeout(() => {
-            contextApp.dialogsArrayAction.add('ResourceAlbumOperation', { _id: res.data.insertedId })
-          }, 500)
         })
         .catch(res => {
           contextApp.messageArrayAction.add(res.message || '系统异常')

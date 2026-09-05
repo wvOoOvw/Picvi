@@ -62,8 +62,8 @@ function App() {
               <Card
                 key={index}
                 sx={{
-                  width: 100,
-                  height: 100,
+                  width: 150,
+                  height: 150,
                   position: 'relative',
                   cursor: 'pointer',
                   border: tempSelected.includes(mediaUrl) ? '2px solid #1976d2' : '1px solid #e0e0e0',

@@ -67,11 +67,8 @@ function App() {
     if (contextApp.dialogsArrayAction.props('ResourceVideoOperation') === undefined) {
       await Fetch.json('/api/app/admin/video/insert', { ...video })
         .then(res => {
-          contextApp.dialogsArrayAction.remove('ResourceVideoOperation')
+          contextApp.dialogsArrayAction.remove('ResourceVideoOperation').add('ResourceVideoOperation', { _id: res.data.insertedId })
           contextApp.messageArrayAction.add('创建成功')
-          setTimeout(() => {
-            contextApp.dialogsArrayAction.add('ResourceVideoOperation', { _id: res.data.insertedId })
-          }, 500)
         })
         .catch(res => {
           contextApp.messageArrayAction.add(res.message || '系统异常')

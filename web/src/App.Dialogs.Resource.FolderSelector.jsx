@@ -57,20 +57,19 @@ function App() {
     return files.flat()
   }
 
-  const processFiles = async (files, fallbackName) => {
+  const processFiles = async (files) => {
     if (files.length === 0) return
 
     const imageFiles = files.filter(f => f.type.startsWith('image/'))
     const videoFiles = files.filter(f => f.type.startsWith('video/'))
     const mediaFiles = [...imageFiles, ...videoFiles]
-
-    const name = files[0].webkitRelativePath?.split('/')[0] || fallbackName || files[0].name
-
+   
     if (mediaFiles.length === 0) {
       contextApp.messageArrayAction.add('文件夹内未找到图片或视频')
       return
     }
 
+    const name = files[0].webkitRelativePath?.split('/')[0].replace('【', '').replace('】', '').replace(/NO\.\d+/, '').replace('  ', ' ')
     const description = `包含内容：${imageFiles.length}P + ${videoFiles.length}V`
     const subscribeview = []
 

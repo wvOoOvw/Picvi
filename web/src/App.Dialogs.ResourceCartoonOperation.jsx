@@ -67,11 +67,8 @@ function App() {
     if (contextApp.dialogsArrayAction.props('ResourceCartoonOperation') === undefined) {
       await Fetch.json('/api/app/admin/cartoon/insert', { ...cartoon })
         .then(res => {
-          contextApp.dialogsArrayAction.remove('ResourceCartoonOperation')
+          contextApp.dialogsArrayAction.remove('ResourceCartoonOperation').add('ResourceCartoonOperation', { _id: res.data.insertedId })
           contextApp.messageArrayAction.add('创建成功')
-          setTimeout(() => {
-            contextApp.dialogsArrayAction.add('ResourceCartoonOperation', { _id: res.data.insertedId })
-          }, 500)
         })
         .catch(res => {
           contextApp.messageArrayAction.add(res.message || '系统异常')
