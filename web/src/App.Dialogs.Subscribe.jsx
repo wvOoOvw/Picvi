@@ -100,7 +100,16 @@ function CardCurrentSubscription() {
                     contextApp.user.subscriptionExpireTime === 0 ? '永久有效' : null
                   }
                   {
-                    contextApp.user.subscriptionExpireTime !== 0 ? `${new Date(contextApp.user.subscriptionExpireTime).toLocaleDateString()}${isExpired ? '（已过期）' : null}` : null
+                    contextApp.user.subscriptionExpireTime !== 0 ?
+                      <>
+                        {
+                          isExpired === true ? '（已过期）' : null
+                        }
+                        {
+                          isExpired !== true ? `${new Date(contextApp.user.subscriptionExpireTime).toLocaleDateString()}` : null
+                        }
+                      </>
+                      : null
                   }
                 </>
                 : null

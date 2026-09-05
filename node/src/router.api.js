@@ -282,11 +282,11 @@ router.post('/api/app/admin/user/find', async (req, res) => {
     var user
 
     if (user_id) {
-      user = await Mongo.client.db(Collection).collection('User').findOne({ _id: new ObjectId(user_id) }, { projection: { _id: 1 } })
+      user = await Mongo.client.db(Collection).collection('User').findOne({ _id: new ObjectId(user_id) })
     }
 
     if (credential) {
-      user = await Mongo.client.db(Collection).collection('User').findOne({ credential: credential }, { projection: { _id: 1 } })
+      user = await Mongo.client.db(Collection).collection('User').findOne({ credential: credential })
     }
 
     res.send({ code: 200, data: user })
@@ -298,7 +298,7 @@ router.post('/api/app/admin/user/find', async (req, res) => {
 
 router.post('/api/app/admin/user/update/subscription', async (req, res) => {
   const { authorization } = req.headers
-  const { user_id, credential, subscription, subscriptionExpireTimeAddition } = req.body
+  const { user_id, credential, subscription, subscriptionExpireTime } = req.body
 
   try {
     {
@@ -306,7 +306,7 @@ router.post('/api/app/admin/user/update/subscription', async (req, res) => {
       if (typeof user_id === 'string' && typeof credential !== 'undefined') throw { error: new Error(), data: { code: 500, message: '异常错误' } }
       if (typeof credential === 'string' && typeof user_id !== 'undefined') throw { error: new Error(), data: { code: 500, message: '异常错误' } }
       if (typeof subscription !== 'string') throw { error: new Error(), data: { code: 500, message: '异常错误' } }
-      if (typeof subscriptionExpireTimeAddition !== 'number') throw { error: new Error(), data: { code: 500, message: '异常错误' } }
+      if (typeof subscriptionExpireTime !== 'number') throw { error: new Error(), data: { code: 500, message: '异常错误' } }
 
       const userExist = await Mongo.client.db(Collection).collection('User').findOne({ authorization: authorization }, { projection: { _id: 1, subscription: 1 } })
 
@@ -325,11 +325,11 @@ router.post('/api/app/admin/user/update/subscription', async (req, res) => {
     }
 
     if (user_id) {
-      await Mongo.client.db(Collection).collection('User').updateOne({ _id: new ObjectId(user_id) }, { $set: { subscription, subscriptionExpireTime: new Date().getTime() + subscriptionExpireTimeAddition } })
+      await Mongo.client.db(Collection).collection('User').updateOne({ _id: new ObjectId(user_id) }, { $set: { subscription, subscriptionExpireTime: subscriptionExpireTime } })
     }
 
     if (credential) {
-      await Mongo.client.db(Collection).collection('User').updateOne({ credential: credential }, { $set: { subscription, subscriptionExpireTime: new Date().getTime() + subscriptionExpireTime } })
+      await Mongo.client.db(Collection).collection('User').updateOne({ credential: credential }, { $set: { subscription, subscriptionExpireTime: subscriptionExpireTime } })
     }
 
     res.send({ code: 200 })

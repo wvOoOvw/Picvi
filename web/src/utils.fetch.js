@@ -1,15 +1,15 @@
-var ipApi = 'http://119.28.215.218'
-var ipOss = 'http://115.190.230.137'
-var ipOnnx = 'http://115.190.230.137'
-var ipWasm = 'http://115.190.230.137'
+var ipApi = 'http://124.156.103.235'
+var ipOss = 'http://124.156.103.235'
 
 // ipApi = window.location.origin
 // ipOss = window.location.origin
-ipApi = 'http://localhost'
-ipOss = 'http://localhost'
-// ipOss = 'http://localhost:8001'
-// ipOnnx = 'http://localhost:8001'
-// ipWasm = 'http://localhost:8001'
+// ipApi = 'http://localhost'
+// ipOss = 'http://localhost'
+
+if (process.env.NODE_ENV === 'prod') {
+  ipApi = window.location.origin
+  ipOss = window.location.origin
+}
 
 const urlDecode = (url) => {
   if (typeof url === 'string') {
@@ -86,4 +86,4 @@ FetchConstructor.prototype.arrayBufferUnauth = async function (url, signal) {
 
 const Fetch = new FetchConstructor()
 
-export { ipApi, ipOnnx, ipWasm, urlDecode, Fetch }
+export { ipApi, ipOss, urlDecode, Fetch }

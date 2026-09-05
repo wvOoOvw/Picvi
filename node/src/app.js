@@ -18,7 +18,7 @@ app.use((req, res, next) => {
   const whiteOrigin = [
     'http://localhost',
     'http://localhost:8000',
-    'http://192.168.0.102:8000'
+    'http://124.156.103.235'
   ]
 
   if ((origin && whiteOrigin.some(i => origin.startsWith(i)) === false) || (referer && whiteOrigin.some(i => referer.startsWith(i)) === false)) {

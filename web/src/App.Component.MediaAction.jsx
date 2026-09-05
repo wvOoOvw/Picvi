@@ -55,7 +55,7 @@ function App(props) {
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, width: 'fit-content', margin: 'auto' }}>
       {
         value.map((i) => {
-          return <Paper key={i} style={{ width: 120, minWidth: 120, maxWidth: 'calc(50% - 12px)', aspectRatio: '1 / 1', borderRadius: 8, overflow: 'hidden', flexGrow: 0, flexShrink: 0, position: 'relative' }}>
+          return <Paper key={i} style={{ width: 129, height: 129, borderRadius: 8, overflow: 'hidden', flexGrow: 0, flexShrink: 0, position: 'relative' }}>
             <Media
               lazy
               cardActionArea
@@ -69,7 +69,7 @@ function App(props) {
           </Paper>
         })
       }
-      <label style={{ width: 120, minWidth: 120, maxWidth: 'calc(50% - 12px)', aspectRatio: '1 / 1', borderRadius: 8, overflow: 'hidden', flexGrow: 0, flexShrink: 0, position: 'relative' }}>
+      <label style={{ width: 129, height: 129, borderRadius: 8, overflow: 'hidden', flexGrow: 0, flexShrink: 0, position: 'relative' }}>
         <input type='file' accept='image/*,video/*' multiple style={{ display: 'none' }} onChange={onAppend} />
         <Card style={{ width: '100%', height: '100%', border: '2px dashed gray', boxShadow: 'none' }}>
           <CardActionArea style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 8 }} component='div'>

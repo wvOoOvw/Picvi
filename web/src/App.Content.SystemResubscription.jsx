@@ -9,10 +9,6 @@ import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-
 import CloseIcon from '@mui/icons-material/Close'
 
 import dayjs from 'dayjs'
@@ -27,6 +23,7 @@ const subscriptionOptions = subscription.map(i => {
   return {
     value: i.value,
     label: i.name,
+    _: i
   }
 })
 
@@ -40,14 +37,16 @@ function App() {
 
   const [userAccess, setUserAccess] = React.useState()
   const [userAccessExpireTime, setUserAccessExpireTime] = React.useState()
+  const [userAccessEdit, setUserAccessEdit] = React.useState()
 
   const onSearch = async () => {
     contextApp.loadingArrayAction.add('SystemResubscription')
 
-    await Fetch.json('/api/app/user/admin/find', { user_id: userId || undefined, credential: credential || undefined })
+    await Fetch.json('/api/app/admin/user/find', { user_id: userId || undefined, credential: credential || undefined })
       .then(res => {
         setUserAccess(res.data.subscription)
-        setUserAccessExpireTime(res.data.subscriptionExpireTime ? dayjs(res.data.subscriptionExpireTime) : null)
+        setUserAccessExpireTime(res.data.subscriptionExpireTime)
+        setUserAccessEdit()
         contextApp.messageArrayAction.add('查询成功')
       })
       .catch(res => {
@@ -60,10 +59,15 @@ function App() {
   const onEnsure = async () => {
     contextApp.loadingArrayAction.add('SystemResubscription')
 
-    await Fetch.json('/api/app/admin/user/update/subscription', { user_id: userId || undefined, credential: credential || undefined, subscription: userAccess, subscriptionExpireTime: userAccessExpireTime ? userAccessExpireTime.valueOf() : undefined })
+    const subscription = subscriptionOptions.find(i => i.value === userAccessEdit)?._.value
+    const accessExpireTimeDayJS = subscriptionOptions.find(i => i.value === userAccessEdit)._.accessExpireTimeDayJS
+    const subscriptionExpireTime =  dayjs().add(accessExpireTimeDayJS[0], accessExpireTimeDayJS[1]).valueOf()
+
+    await Fetch.json('/api/app/admin/user/update/subscription', { user_id: userId || undefined, credential: credential || undefined, subscription: subscription, subscriptionExpireTime: subscriptionExpireTime })
       .then(res => {
         setUserAccess()
         setUserAccessExpireTime()
+        setUserAccessEdit()
         onSearch()
         contextApp.messageArrayAction.add('修改成功')
       })
@@ -90,25 +94,24 @@ function App() {
                 <CloseIcon color='primary' style={{ width: 32, height: 32, cursor: 'pointer' }} onClick={onClose} />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', gap: 24, paddingTop: 32 }}>
-                <TextField required fullWidth autoComplete='off' label='ID' variant='outlined' value={userId} onChange={e => { setUserId(e.target.value); setCredential(''); setUserAccess(); setUserAccessExpireTime(); }} disabled={credential !== ''} />
-                <TextField required fullWidth autoComplete='off' label='账号' variant='outlined' value={credential} onChange={e => { setUserId(''); setCredential(e.target.value); setUserAccess(); setUserAccessExpireTime(); }} disabled={userId !== ''} />
+                <TextField required fullWidth autoComplete='off' label='ID' variant='outlined' value={userId} onChange={e => { setUserId(e.target.value); setCredential(''); setUserAccess(); setUserAccessExpireTime(); setUserAccessEdit(); }} disabled={credential !== ''} />
+                <TextField required fullWidth autoComplete='off' label='账号' variant='outlined' value={credential} onChange={e => { setUserId(''); setCredential(e.target.value); setUserAccess(); setUserAccessExpireTime(); setUserAccessEdit(); }} disabled={userId !== ''} />
                 {
                   userAccess !== undefined ?
                     <>
-                      <FormControl fullWidth size='small' variant='standard'>
-                        <InputLabel>权限</InputLabel>
-                        <Select color='primary' variant='standard' size='small' label='权限' value={userAccess} onChange={e => setUserAccess(e.target.value)}>
+                      <TextField fullWidth label='权限' variant='outlined' value={subscription.find(i => i.value === userAccess)?.name || userAccess} disabled />
+                      <TextField fullWidth label='过期时间' variant='outlined' value={userAccessExpireTime ? new Date(userAccessExpireTime).toLocaleDateString() : '永久有效'} disabled />
+
+                      <FormControl fullWidth>
+                        <InputLabel>套餐</InputLabel>
+                        <Select color='primary' variant='outlined' label='套餐' value={userAccessEdit} onChange={e => setUserAccessEdit(e.target.value)}>
                           {
-                            subscriptionOptions.map(i => {
-                              return <MenuItem key={i.value} value={i.value}>{i.label}</MenuItem>
+                            subscriptionOptions.filter(i => i._.noSale !== true).map(i => {
+                              return <MenuItem key={i.value} value={i.value}>{i.label} {i._.results?.subscriptionExpireTimeAdd}</MenuItem>
                             })
                           }
                         </Select>
                       </FormControl>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker label='过期时间' value={userAccessExpireTime} onChange={setUserAccessExpireTime}
-                        />
-                      </LocalizationProvider>
                     </>
                     : null
                 }

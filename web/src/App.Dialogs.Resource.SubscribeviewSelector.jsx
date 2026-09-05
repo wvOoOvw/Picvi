@@ -56,14 +56,14 @@ function App() {
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, padding: 8, justifyContent: 'center' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {subscribeview && subscribeview.length > 0 ? (
             subscribeview.map((mediaUrl, index) => (
               <Card
                 key={index}
-                sx={{
-                  width: 150,
-                  height: 150,
+                style={{
+                  width: 162,
+                  height: 162,
                   position: 'relative',
                   cursor: 'pointer',
                   border: tempSelected.includes(mediaUrl) ? '2px solid #1976d2' : '1px solid #e0e0e0',
@@ -72,6 +72,7 @@ function App() {
                 onClick={() => toggleSelect(mediaUrl)}
               >
                 <Media
+                  lazy
                   src={mediaUrl}
                   style={{
                     width: '100%',
