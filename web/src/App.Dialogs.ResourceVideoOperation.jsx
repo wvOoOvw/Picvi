@@ -159,7 +159,7 @@ function App() {
         }
       </DialogContent>
       <DialogActions>
-        <Button onClick={onUploadFolder} disabled={videoLoading}>上传文件夹</Button>
+        <Button onClick={onUploadFolder} disabled={videoLoading} style={{ whiteSpace: 'nowrap' }}>上传文件夹</Button>
         <Button onClick={() => setStep(i => i - 1)} disabled={step === 0 || videoLoading}>上一步</Button>
         <Button onClick={() => setStep(i => i + 1)} disabled={step === 7 || videoLoading}>下一步</Button>
         <Button onClick={onUpdate} disabled={videoLoading}>确认</Button>

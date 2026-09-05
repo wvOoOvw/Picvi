@@ -1,6 +1,6 @@
 export const Key = 'picvi-encryption-key-v1'
 export const SALT = 'picvi-encryption-salt-v1'
-export const ITERATIONS = 100000
+export const ITERATIONS = 100
 export const KEY_LENGTH = 256
 export const MIME_MAP = {
     jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png',

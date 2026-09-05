@@ -56,14 +56,14 @@ function App() {
         </Typography>
       </DialogTitle>
       <DialogContent>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 8 }}>
           {subscribeview && subscribeview.length > 0 ? (
             subscribeview.map((mediaUrl, index) => (
               <Card
                 key={index}
                 style={{
-                  width: 162,
-                  height: 162,
+                  width: 120,
+                  height: 120,
                   position: 'relative',
                   cursor: 'pointer',
                   border: tempSelected.includes(mediaUrl) ? '2px solid #1976d2' : '1px solid #e0e0e0',
