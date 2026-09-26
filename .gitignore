@@ -6,3 +6,7 @@
 **/npm-debug.log
 **/@cache
 **/build
+**/public
+**/cache
+**/._*
+**/._*/
